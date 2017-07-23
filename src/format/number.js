@@ -1,0 +1,15 @@
+export default {
+  default: v => v,
+  abs: Math.abs,
+  floor: Math.floor,
+  ceil: Math.ceil,
+  trunc: Math.trunc,
+  round: Math.round,
+  fixed2: v => v.toFixed(2),
+  exponential: v => v.toExponential(2),
+  usd: v => v.toLocaleString('en-US', { style: 'currency', currency: 'USD' }),
+  locale: v => v.toLocaleString(),
+  binary: v => Math.floor(v).toString(2),
+  octal: v => Math.floor(v).toString(8),
+  hex: v => Math.floor(v).toString(16),
+};
