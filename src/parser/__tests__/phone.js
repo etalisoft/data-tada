@@ -37,7 +37,7 @@ describe('parser.string', () => {
     });
   });
 
-  it.only('should reject on invalid', () => {
+  it('should reject on invalid', () => {
     const VALUES = {
       '1234567': '123-4567',
       '12345678': 'invalid',
@@ -48,7 +48,7 @@ describe('parser.string', () => {
       '800-555-1212[x123]': '(800) 555-1212 ext. 123',
       'o.O': 'invalid',
     };
-    const keys = 'areaCode,local3,last4,parts'.split(',');
+    const keys = 'areaCode,local3,last4,extension'.split(',');
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
       const actual = parser()(k);
