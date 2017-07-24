@@ -1,9 +1,9 @@
 import expect from 'expect';
 
 import SyncPromise from '../../SyncPromise';
-import parser from '../phone.js';
+import parser from '../ssn.js';
 
-describe('parser.phone', () => {
+describe('parser.ssn', () => {
   it('should return a SyncPromise', () => {
     const result = parser()();
     expect(result).toBeA(SyncPromise);
@@ -39,16 +39,12 @@ describe('parser.phone', () => {
 
   it('should reject on invalid', () => {
     const VALUES = {
-      '1234567': '123-4567',
       '12345678': 'invalid',
-      '8001234567': '(800) 123-4567',
-      '18001234567': '(800) 123-4567',
-      '28001234567': 'invalid',
-      'Work: 123-4567 extension 9876': '123-4567 ext. 9876',
-      '800-555-1212[x123]': '(800) 555-1212 ext. 123',
-      'o.O': 'invalid',
+      '123456789': '123-45-6789',
+      '|123|12|1234|': '123-12-1234',
+      '1234567890': 'invalid',
     };
-    const keys = 'areaCode,local3,last4,extension'.split(',');
+    const keys = 'ssn,first3,middle2,last4'.split(',');
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
       const actual = parser()(k);
@@ -56,7 +52,7 @@ describe('parser.phone', () => {
         expect(actual.value).toBe('invalid');
       } else {
         expect(actual.value).toIncludeKeys(keys);
-        expect(actual.value.phone).toBe(expected);
+        expect(actual.value.ssn).toBe(expected);
       }
       expect(actual.status).toBe(expected === 'invalid' ? 'rejected' : 'resolved');
     });
@@ -64,14 +60,14 @@ describe('parser.phone', () => {
 
   it('should resolve/reject on validate', () => {
     const VALUES = {
-      '123-456-6789': '(123) 456-6789',
-      '800-456-6789': 'validate',
+      '666-45-6789': 'validate',
+      '123-45-6789': '123-45-6789',
     };
-    const not800Number = ({ areaCode }) => areaCode !== '800';
+    const not666 = ({ first3 }) => first3 !== '666';
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ validate: not800Number })(k);
-      expect(expected === 'validate' ? actual.value : actual.value.phone).toBe(expected);
+      const actual = parser({ validate: not666 })(k);
+      expect(expected === 'validate' ? actual.value : actual.value.ssn).toBe(expected);
       expect(actual.status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
     });
   });

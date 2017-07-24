@@ -1,5 +1,4 @@
 import expect from 'expect';
-import moment from 'moment';
 
 import SyncPromise from '../../SyncPromise';
 import parser from '../date.js';
@@ -8,6 +7,7 @@ const falsy = [null, undefined, false, 0, NaN, ''];
 
 describe('parser.date', () => {
   let warn;
+
   before(() => {
     warn = console.warn;
     console.warn = () => {};
@@ -59,12 +59,13 @@ describe('parser.date', () => {
   });
 
   it('should reject if an invalid min is specified', () => {
-    [...falsy, 'now', 'today', '2000-01-01 12:30:00', new Date(), () => new Date(), { year: 2000 }, [2000]].map(min => {
+    [...falsy, 'now', 'today', '2000-01-01 12:30:00', new Date(), () => new Date(), { year: 2000 }, [2000]]
+    .forEach(min => {
       const actual = parser({ min })('now');
       expect(actual.status).toBe('resolved');
       expect(actual.value.moment.isValid()).toBe(true);
     });
-    ['o.O'].map(min => {
+    ['o.O'].forEach(min => {
       const actual = parser({ min })('now');
       expect(actual.status).toBe('rejected');
       expect(actual.value).toBe('invalidMin');
@@ -89,12 +90,13 @@ describe('parser.date', () => {
   });
 
   it('should reject if an invalid max is specified', () => {
-    [...falsy, 'now', 'today', '2000-01-01 12:30:00', new Date(), () => new Date(), { year: 2000 }, [2000]].map(max => {
+    [...falsy, 'now', 'today', '2000-01-01 12:30:00', new Date(), () => new Date(), { year: 2000 }, [2000]]
+    .forEach(max => {
       const actual = parser({ max })('1969-12-31 12:00:00');
       expect(actual.status).toBe('resolved');
       expect(actual.value.moment.isValid()).toBe(true);
     });
-    ['o.O'].map(max => {
+    ['o.O'].forEach(max => {
       const actual = parser({ max })('1969-12-31 12:00:00');
       expect(actual.status).toBe('rejected');
       expect(actual.value).toBe('invalidMax');
@@ -109,7 +111,7 @@ describe('parser.date', () => {
     Object.keys(TESTS).forEach(k => {
       const actual = parser({ validate: TESTS[k] })('2000-01-01');
       expect(actual.status).toBe(k === 'validate' ? 'rejected' : 'resolved');
-      if (k == 'validate') {
+      if (k === 'validate') {
         expect(actual.value).toBe('validate');
       } else {
         expect(actual.value.moment.format('M/D/YYYY')).toBe('1/1/2000');
