@@ -47,7 +47,7 @@ describe('parser.date', () => {
       '2000-01-01 12:30:00': true,
     };
     Object.keys(VALUES).forEach(k => {
-      const actual = parser({ min: '2000-01-01 12:30:00' })(k);
+      const actual = parser({ min: '2000-01-01 12:29:30' })(k);
       const expected = VALUES[k];
       expect(actual.status).toBe(expected === 'min' ? 'rejected' : 'resolved');
       if (expected === 'min') {
