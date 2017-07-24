@@ -13,7 +13,7 @@ describe('format.number', () => {
         trunc: Math.trunc(value),
         round: Math.round(value),
         fixed2: value.toFixed(2),
-        exponential: value.toExponential(2),
+        exponential2: value.toExponential(2),
         usd: value.toLocaleString('en', { style: 'currency', currency: 'USD' }),
         locale: value.toLocaleString(),
         binary: Math.floor(value).toString(2),

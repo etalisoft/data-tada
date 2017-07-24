@@ -19,7 +19,5 @@ describe('format.string', () => {
       expect(actual).toBe(expected, `${k}: Expected ${JSON.stringify(actual)} to be ${JSON.stringify(expected)}`);
     });
     expect(format.fromBase64('ZGF0YS10YWRh')).toBe('data-tada');
-    const json = { a: 1, b: 'b', c: {}, d: null, e: [], f: true };
-    expect(format.json(JSON.stringify(json))).toInclude(json);
   });
 });

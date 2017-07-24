@@ -70,7 +70,12 @@ export default (
   { model = SyncPromise, required = false, min, max, validate, formats = FORMATS, ...args } = {}
 ) => value =>
   new model((resolve, reject) => {
-    let result = value && value.toString instanceof Function ? value.toString() : value;
+    let result;
+    if(typeof value === 'number' || typeof value === 'string') {
+      result = value;
+    } else {
+      result = value && value.toString instanceof Function ? value.toString() : value;
+    }
     result = render(parse(result, formats, ...args));
 
     if (!value) {

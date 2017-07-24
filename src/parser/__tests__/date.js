@@ -61,12 +61,12 @@ describe('parser.date', () => {
   it('should reject if an invalid min is specified', () => {
     [...falsy, 'now', 'today', '2000-01-01 12:30:00', new Date(), () => new Date(), { year: 2000 }, [2000]]
     .forEach(min => {
-      const actual = parser({ min })('now');
-      expect(actual.status).toBe('resolved');
+      const actual = parser({ min })(Date.now() + 1000);
+      expect(actual.status).toBe('resolved', actual.value);
       expect(actual.value.moment.isValid()).toBe(true);
     });
     ['o.O'].forEach(min => {
-      const actual = parser({ min })('now');
+      const actual = parser({ min })(Date.now() + 1000);
       expect(actual.status).toBe('rejected');
       expect(actual.value).toBe('invalidMin');
     });

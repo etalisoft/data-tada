@@ -1,4 +1,4 @@
 export default {
-  default: ({ areaCode, parts }) =>
-    areaCode.startsWith('8') ? parts.join('-') : `(${parts[0]}) ${parts[1]}-${parts[2]}`,
+  default: ({ phone }) => phone,
+  localOnly: ({ local3, last4 }) => `${local3}-${last4}`,
 };

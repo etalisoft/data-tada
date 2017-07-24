@@ -12,5 +12,4 @@ export default {
     }),
   toBase64: window.btoa,
   fromBase64: window.atob,
-  json: JSON.parse,
 };
