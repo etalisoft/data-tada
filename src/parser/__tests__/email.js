@@ -28,8 +28,8 @@ describe('parser.email', () => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
       const required = parser({ required: false })(VALUES[k]);
-      expect(required.value).toBe(expected, msg(k, expected, required));
-      expect(required.status).toBe('resolved');
+      expect(required.value).toBe('required');
+      expect(required.status).toBe('rejected');
 
       const notRequired = parser({ required: false })(VALUES[k]);
       expect(notRequired.value).toBe(expected, msg(k, expected, notRequired));

@@ -11,7 +11,7 @@ const scrubFloat = value => {
     const trim = value.replace(/^[^\d+-\.]*/, '');
     // Keep only digit characters
     const match = trim.match(/^[+-]?\D?\s?[\d,]*(\.\d*)?([eE][+-]\d+)?/);
-    if (match) {
+    if (match && match[0].match(/\d/)) {
       // Replace debris characters (commas)
       return match[0].replace(/[^eE\d+\-.]*/g, '');
     }

@@ -25,6 +25,8 @@ describe('format.number', () => {
         const actual = format[k](value);
         expect(actual).toBe(expected, `${k}: Expected ${JSON.stringify(actual)} to be ${JSON.stringify(expected)}`);
       });
+      expect(format.exponential(3)(-12345.6789)).toBe((-12345.6789).toExponential(3));
+      expect(format.base(9)(-12345.6789)).toBe(Math.floor(-12345.6789).toString(9));
     });
   });
 });

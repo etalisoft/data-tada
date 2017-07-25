@@ -41,6 +41,19 @@ describe('parser.date', () => {
     });
   });
 
+  it('should reject on invalid', () => {
+    ['now', 'today', '2000-01-01', new Date(), { year: 2000 }, [2000]].forEach(value => {
+      const actual = parser({ required: true })(value);
+      expect(actual.status).toBe('resolved');
+      expect(actual.value.moment.isValid()).toBe(true);
+    });
+    ['o.O'].forEach(value => {
+      const actual = parser({ required: true })(value);
+      expect(actual.status).toBe('rejected');
+      expect(actual.value).toBe('invalid');
+    });
+  });
+
   it('should resolve/reject on min', () => {
     const VALUES = {
       '2000-01-01 12:29:00': 'min',
@@ -59,8 +72,16 @@ describe('parser.date', () => {
   });
 
   it('should reject if an invalid min is specified', () => {
-    [...falsy, 'now', 'today', '2000-01-01 12:30:00', new Date(), () => new Date(), { year: 2000 }, [2000]]
-    .forEach(min => {
+    [
+      ...falsy,
+      'now',
+      'today',
+      '2000-01-01 12:30:00',
+      new Date(),
+      () => new Date(),
+      { year: 2000 },
+      [2000],
+    ].forEach(min => {
       const actual = parser({ min })(Date.now() + 1000);
       expect(actual.status).toBe('resolved', actual.value);
       expect(actual.value.moment.isValid()).toBe(true);
@@ -90,8 +111,16 @@ describe('parser.date', () => {
   });
 
   it('should reject if an invalid max is specified', () => {
-    [...falsy, 'now', 'today', '2000-01-01 12:30:00', new Date(), () => new Date(), { year: 2000 }, [2000]]
-    .forEach(max => {
+    [
+      ...falsy,
+      'now',
+      'today',
+      '2000-01-01 12:30:00',
+      new Date(),
+      () => new Date(),
+      { year: 2000 },
+      [2000],
+    ].forEach(max => {
       const actual = parser({ max })('1969-12-31 12:00:00');
       expect(actual.status).toBe('resolved');
       expect(actual.value.moment.isValid()).toBe(true);
