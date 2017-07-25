@@ -32,7 +32,7 @@ badEmail.value;  // 'invalid'
 You can use `then` methods to transform/format data.  Format functions are pure functions.  Some default format
 functions have been provided in the `format` object.
 ```js
-import { parser, formatter } from 'data-tada';
+import { parser, format } from 'data-tada';
 
 const emailParser = parser.email();
 
@@ -41,8 +41,8 @@ result.status; // 'resolved'
 result.value;  // '****@doe.com'
 
 // Custom format function for reversing a string
-const reverse = str => str.split('').reverse().join('');
-const another = emailParser('john@doe.com').then(reverse);
+const reverseEmail = ({ email }) => email.split('').reverse().join('');
+const another = emailParser('john@doe.com').then(reverseEmail);
 result.status; // 'resolved'
 result.value;  // 'moc.eod@nhoj'
 ```
@@ -58,7 +58,7 @@ const passwordParser = parser.string({
   maxLength: 20,
   regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/,
   notRegex: /password/i,
-  validate: str => str.includes('123'),
+  validate: str => !str.includes('123'),
 });
 
 /*
