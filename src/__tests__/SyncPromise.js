@@ -24,10 +24,9 @@ describe('SyncPromise', () => {
     expect(() => SyncPromise(() => {}).catch(o => o)).toThrow(/SyncPromise.catch/);
   });
 
-  it('should return default status/value before resolve/reject', () => {
-    const promise = new SyncPromise(() => {});
-    expect(promise.status).toBe('pending');
-    expect(promise.value).toBe(undefined);
+  it('should throw an error if `value` is called before resolve/reject', () => {
+    const callUnresolvedSyncPromiseValue = () => new SyncPromise(() => {}).value();
+    expect(callUnresolvedSyncPromiseValue).toThrow(/SyncPromise.value/);
   });
 
   it('should chain `then` functions after resolve', () => {
@@ -45,8 +44,10 @@ describe('SyncPromise', () => {
     expect(handlers.then).toHaveBeenCalled();
     expect(handlers.then.calls.length).toBe(3);
     expect(handlers.catch).toNotHaveBeenCalled();
-    expect(promise.status).toBe('resolved');
-    expect(promise.value).toBe(3);
+    promise.value(({ status, value }) => {
+      expect(status).toBe('resolved');
+      expect(value).toBe(3);
+    });
   });
 
   it('should call `catch` and then chain `then` functions after reject', () => {
@@ -68,43 +69,48 @@ describe('SyncPromise', () => {
     expect(handlers.catch).toHaveBeenCalled();
     expect(handlers.then).toHaveBeenCalled();
     expect(handlers.then.calls.length).toBe(2);
-    expect(promise.status).toBe('resolved');
-    expect(promise.value).toBe(2);
+    promise.value(({ status, value }) => {
+      expect(status).toBe('resolved');
+      expect(value).toBe(2);
+    });
   });
 
   it('should only resolve/reject in the resolver once', () => {
-    const p1 = new SyncPromise((resolve, reject) => {
+    new SyncPromise((resolve, reject) => {
       resolve('a');
       resolve('b');
       reject('c');
       throw Error('d');
+    }).value(({ status, value }) => {
+      expect(status).toBe('resolved');
+      expect(value).toBe('a');
     });
-    expect(p1.status).toBe('resolved');
-    expect(p1.value).toBe('a');
 
-    const p2 = new SyncPromise((resolve, reject) => {
+    new SyncPromise((resolve, reject) => {
       reject('e');
       reject('f');
       resolve('g');
       throw Error('h');
+    }).value(({ status, value }) => {
+      expect(status).toBe('rejected');
+      expect(value).toBe('e');
     });
-    expect(p2.status).toBe('rejected');
-    expect(p2.value).toBe('e');
 
-    const p3 = new SyncPromise((resolve, reject) => {
-      throw 'i';
-      resolve('j');
+    new SyncPromise((resolve, reject) => {
+      throw 'i'; // eslint-disable-line no-throw-literal
+      resolve('j'); // eslint-disable-line no-unreachable
       reject('k');
-    });
-    expect(p3.status).toBe('rejected');
-    expect(p3.value).toBe('i');
+    }).value(({ status, value }) => {
+      expect(status).toBe('rejected');
+      expect(value).toBe('i');
+    })
   });
 
   it('should call `catch` if a `then` throws an error', () => {
     const handlers = {
       skip: () => NaN,
       throw: () => {
-        throw 'err';
+        throw 'err'; // eslint-disable-line no-throw-literal
       },
       then: v => v + 1,
       catch: v => 0,
@@ -126,15 +132,17 @@ describe('SyncPromise', () => {
     expect(handlers.catch.calls.length).toBe(1);
     expect(handlers.then).toHaveBeenCalled();
     expect(handlers.then.calls.length).toBe(2);
-    expect(promise.status).toBe('resolved');
-    expect(promise.value).toBe(2);
+    promise.value(({ status, value }) => {
+      expect(status).toBe('resolved');
+      expect(value).toBe(2);
+    });
   });
 
   it('should call `catch` if a `catch` throws an error', () => {
     const handlers = {
       skip: () => NaN,
       throw: () => {
-        throw 'err';
+        throw 'err'; // eslint-disable-line no-throw-literal
       },
       then: v => v + 1,
       catch: v => 0,
@@ -157,7 +165,9 @@ describe('SyncPromise', () => {
     expect(handlers.catch.calls.length).toBe(1);
     expect(handlers.then).toHaveBeenCalled();
     expect(handlers.then.calls.length).toBe(2);
-    expect(promise.status).toBe('resolved');
-    expect(promise.value).toBe(2);
+    promise.value(({ status, value }) => {
+      expect(status).toBe('resolved');
+      expect(value).toBe(2);
+    })
   });
 });

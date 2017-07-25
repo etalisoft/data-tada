@@ -27,13 +27,15 @@ describe('parser.ssn', () => {
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
-      const required = parser({ required: true })(VALUES[k]);
-      expect(required.value).toBe('required');
-      expect(required.status).toBe('rejected');
+      parser({ required: true })(VALUES[k]).value(({ status, value }) => {
+        expect(value).toBe('required');
+        expect(status).toBe('rejected');
+      });
 
-      const notRequired = parser({ required: false })(VALUES[k]);
-      expect(notRequired.value).toBe(expected, msg(k, expected, notRequired));
-      expect(notRequired.status).toBe('resolved');
+      parser({ required: false })(VALUES[k]).value(({ status, value }) => {
+        expect(value).toBe(expected, msg(k, expected, value));
+        expect(status).toBe('resolved');
+      });
     });
   });
 
@@ -47,14 +49,15 @@ describe('parser.ssn', () => {
     const keys = 'ssn,first3,middle2,last4'.split(',');
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser()(k);
-      if (expected === 'invalid') {
-        expect(actual.value).toBe('invalid');
-      } else {
-        expect(actual.value).toIncludeKeys(keys);
-        expect(actual.value.ssn).toBe(expected);
-      }
-      expect(actual.status).toBe(expected === 'invalid' ? 'rejected' : 'resolved');
+      parser()(k).value(({ status, value }) => {
+        if (expected === 'invalid') {
+          expect(value).toBe('invalid');
+        } else {
+          expect(value).toIncludeKeys(keys);
+          expect(value.ssn).toBe(expected);
+        }
+        expect(status).toBe(expected === 'invalid' ? 'rejected' : 'resolved');
+      });
     });
   });
 
@@ -66,9 +69,10 @@ describe('parser.ssn', () => {
     const not666 = ({ first3 }) => first3 !== '666';
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ validate: not666 })(k);
-      expect(expected === 'validate' ? actual.value : actual.value.ssn).toBe(expected);
-      expect(actual.status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
+      parser({ validate: not666 })(k).value(({ status, value }) => {
+        expect(expected === 'validate' ? value : value.ssn).toBe(expected);
+        expect(status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
+      });
     });
   });
 });

@@ -30,27 +30,31 @@ describe('parser.date', () => {
   it('should resolve/reject on required', () => {
     const keys = 'moment,date,D,DD,ddd,dddd,S,SS,SSS,SSSS,h,hh,H,HH,m,mm,M,MM,MMM,MMMM,A,YY,YYYY,Z'.split(',');
     falsy.forEach(value => {
-      const notRequired = parser({ required: false })(value);
-      if (!notRequired.value) console.log('UH OH', value, notRequired.value);
-      expect(notRequired.value).toExist().toIncludeKeys(keys);
-      expect(notRequired.status).toBe('resolved');
+      parser({ required: false })(value).value(({ status, value }) => {
+        if (!value) console.log('UH OH', value, value);
+        expect(value).toExist().toIncludeKeys(keys);
+        expect(status).toBe('resolved');
+      });
 
-      const required = parser({ required: true })(value);
-      expect(required.value).toBe('required');
-      expect(required.status).toBe('rejected');
+      parser({ required: true })(value).value(({ status, value }) => {
+        expect(value).toBe('required');
+        expect(status).toBe('rejected');
+      })
     });
   });
 
   it('should reject on invalid', () => {
     ['now', 'today', '2000-01-01', new Date(), { year: 2000 }, [2000]].forEach(value => {
-      const actual = parser({ required: true })(value);
-      expect(actual.status).toBe('resolved');
-      expect(actual.value.moment.isValid()).toBe(true);
+      parser({ required: true })(value).value(({ status, value }) => {
+        expect(status).toBe('resolved');
+        expect(value.moment.isValid()).toBe(true);
+      })
     });
     ['o.O'].forEach(value => {
-      const actual = parser({ required: true })(value);
-      expect(actual.status).toBe('rejected');
-      expect(actual.value).toBe('invalid');
+      parser({ required: true })(value).value(({ status, value }) => {
+        expect(status).toBe('rejected');
+        expect(value).toBe('invalid');
+      });
     });
   });
 
@@ -60,14 +64,15 @@ describe('parser.date', () => {
       '2000-01-01 12:30:00': true,
     };
     Object.keys(VALUES).forEach(k => {
-      const actual = parser({ min: '2000-01-01 12:29:30' })(k);
       const expected = VALUES[k];
-      expect(actual.status).toBe(expected === 'min' ? 'rejected' : 'resolved');
-      if (expected === 'min') {
-        expect(actual.value).toBe('min');
-      } else {
-        expect(actual.value.moment.format('M/D/YYYY')).toBe('1/1/2000');
-      }
+      parser({ min: '2000-01-01 12:29:30' })(k).value(({ status, value }) => {
+        expect(status).toBe(expected === 'min' ? 'rejected' : 'resolved');
+        if (expected === 'min') {
+          expect(value).toBe('min');
+        } else {
+          expect(value.moment.format('M/D/YYYY')).toBe('1/1/2000');
+        }
+      });
     });
   });
 
@@ -82,14 +87,16 @@ describe('parser.date', () => {
       { year: 2000 },
       [2000],
     ].forEach(min => {
-      const actual = parser({ min })(Date.now() + 1000);
-      expect(actual.status).toBe('resolved', actual.value);
-      expect(actual.value.moment.isValid()).toBe(true);
+      parser({ min })(Date.now() + 1000).value(({ status, value }) => {
+        expect(status).toBe('resolved', value);
+        expect(value.moment.isValid()).toBe(true);
+      })
     });
     ['o.O'].forEach(min => {
-      const actual = parser({ min })(Date.now() + 1000);
-      expect(actual.status).toBe('rejected');
-      expect(actual.value).toBe('invalidMin');
+      parser({ min })(Date.now() + 1000).value(({ status, value }) => {
+        expect(status).toBe('rejected');
+        expect(value).toBe('invalidMin');
+      })
     });
   });
 
@@ -100,13 +107,14 @@ describe('parser.date', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ max: '2000-01-01 12:29:00' })(k);
-      expect(actual.status).toBe(expected === 'max' ? 'rejected' : 'resolved');
-      if (expected === 'max') {
-        expect(actual.value).toBe('max');
-      } else {
-        expect(actual.value.moment.format('M/D/YYYY')).toBe('1/1/2000');
-      }
+      parser({ max: '2000-01-01 12:29:00' })(k).value(({ status, value }) => {
+        expect(status).toBe(expected === 'max' ? 'rejected' : 'resolved');
+        if (expected === 'max') {
+          expect(value).toBe('max');
+        } else {
+          expect(value.moment.format('M/D/YYYY')).toBe('1/1/2000');
+        }
+      });
     });
   });
 
@@ -121,14 +129,16 @@ describe('parser.date', () => {
       { year: 2000 },
       [2000],
     ].forEach(max => {
-      const actual = parser({ max })('1969-12-31 12:00:00');
-      expect(actual.status).toBe('resolved');
-      expect(actual.value.moment.isValid()).toBe(true);
+      parser({ max })('1969-12-31 12:00:00').value(({ status, value }) => {
+        expect(status).toBe('resolved');
+        expect(value.moment.isValid()).toBe(true);
+      })
     });
     ['o.O'].forEach(max => {
-      const actual = parser({ max })('1969-12-31 12:00:00');
-      expect(actual.status).toBe('rejected');
-      expect(actual.value).toBe('invalidMax');
+      parser({ max })('1969-12-31 12:00:00').value(({ status, value }) => {
+        expect(status).toBe('rejected');
+        expect(value).toBe('invalidMax');
+      })
     });
   });
 
@@ -138,13 +148,14 @@ describe('parser.date', () => {
       validate: () => false,
     };
     Object.keys(TESTS).forEach(k => {
-      const actual = parser({ validate: TESTS[k] })('2000-01-01');
-      expect(actual.status).toBe(k === 'validate' ? 'rejected' : 'resolved');
-      if (k === 'validate') {
-        expect(actual.value).toBe('validate');
-      } else {
-        expect(actual.value.moment.format('M/D/YYYY')).toBe('1/1/2000');
-      }
+      parser({ validate: TESTS[k] })('2000-01-01').value(({ status, value }) => {
+        expect(status).toBe(k === 'validate' ? 'rejected' : 'resolved');
+        if (k === 'validate') {
+          expect(value).toBe('validate');
+        } else {
+          expect(value.moment.format('M/D/YYYY')).toBe('1/1/2000');
+        }
+      })
     });
   });
 });

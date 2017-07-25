@@ -35,7 +35,7 @@ export default function SyncPromise(resolver) {
   }
 
   this.then = fn => {
-    if (status == STATUS.PENDING) throw Error('SyncPromise.then must be called after resolving/rejecting.');
+    if (status === STATUS.PENDING) throw Error('SyncPromise.then must be called after resolving/rejecting.');
     if (status === STATUS.RESOLVED) {
       try {
         value = fn(value);
@@ -60,6 +60,12 @@ export default function SyncPromise(resolver) {
     return this;
   };
 
-  Object.defineProperty(this, 'value', { get: () => value });
-  Object.defineProperty(this, 'status', { get: () => ['pending', 'resolved', 'rejected'][status] });
+  this.value = fn => {
+    if (status === STATUS.PENDING) throw Error('SyncPromise.value must be called after resolving/rejecting.');
+    const state = {
+      value,
+      status: ['pending', 'resolved', 'rejected'][status],
+    };
+    return fn instanceof Function ? fn(state) : value;
+  }
 }

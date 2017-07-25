@@ -27,13 +27,15 @@ describe('parser.number', () => {
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
-      const required = parser({ required: true })(VALUES[k]);
-      expect(required.value).toBe('required');
-      expect(required.status).toBe('rejected');
+      parser({ required: true })(VALUES[k]).value(({ status, value }) => {
+        expect(value).toBe('required');
+        expect(status).toBe('rejected');
+      });
 
-      const notRequired = parser({ required: false })(VALUES[k]);
-      expect(notRequired.value).toBe(expected, msg(k, expected, notRequired));
-      expect(notRequired.status).toBe('resolved');
+      parser({ required: false })(VALUES[k]).value(({ status, value }) => {
+        expect(value).toBe(expected, msg(k, expected, value));
+        expect(status).toBe('resolved');
+      });
     });
   });
 
@@ -52,10 +54,11 @@ describe('parser.number', () => {
     };
     const msg = (k, expected, actual) => `${k}: Expected ${JSON.stringify(expected)} to be ${JSON.stringify(actual)}`;
     Object.keys(VALUES).forEach(k => {
-      const actual = parser()(k);
       const expected = VALUES[k];
-      expect(actual.value).toBe(expected, msg(k, expected, actual.value));
-      expect(actual.status).toBe(expected === 'invalid' ? 'rejected' : 'resolved');
+      parser()(k).value(({ status, value }) => {
+        expect(value).toBe(expected, msg(k, expected, value));
+        expect(status).toBe(expected === 'invalid' ? 'rejected' : 'resolved');
+      });
     });
   });
 
@@ -66,9 +69,10 @@ describe('parser.number', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ min: 124 })(k);
-      expect(actual.value).toBe(expected);
-      expect(actual.status).toBe(expected === 'min' ? 'rejected' : 'resolved');
+      parser({ min: 124 })(k).value(({ status, value }) => {
+        expect(value).toBe(expected);
+        expect(status).toBe(expected === 'min' ? 'rejected' : 'resolved');
+      });
     });
   });
 
@@ -79,9 +83,10 @@ describe('parser.number', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ max: 123 })(k);
-      expect(actual.value).toBe(expected);
-      expect(actual.status).toBe(expected === 'max' ? 'rejected' : 'resolved');
+      parser({ max: 123 })(k).value(({ status, value }) => {
+        expect(value).toBe(expected);
+        expect(status).toBe(expected === 'max' ? 'rejected' : 'resolved');
+      });
     });
   });
 
@@ -93,9 +98,10 @@ describe('parser.number', () => {
     const onlyOdd = v => v % 2;
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ validate: onlyOdd })(k);
-      expect(actual.value).toBe(expected);
-      expect(actual.status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
+      parser({ validate: onlyOdd })(k).value(({ status, value }) => {
+        expect(value).toBe(expected);
+        expect(status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
+      });
     });
   });
 });

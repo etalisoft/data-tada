@@ -27,13 +27,15 @@ describe('parser.zip', () => {
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
-      const required = parser({ required: true })(VALUES[k]);
-      expect(required.value).toBe('required');
-      expect(required.status).toBe('rejected');
+      parser({ required: true })(VALUES[k]).value(({ status, value }) => {
+        expect(value).toBe('required');
+        expect(status).toBe('rejected');
+      });
 
-      const notRequired = parser({ required: false })(VALUES[k]);
-      expect(notRequired.value).toBe(expected, msg(k, expected, notRequired));
-      expect(notRequired.status).toBe('resolved');
+      parser({ required: false })(VALUES[k]).value(({ status, value }) => {
+        expect(value).toBe(expected, msg(k, expected, value));
+        expect(status).toBe('resolved');
+      });
     });
   });
 
@@ -48,14 +50,15 @@ describe('parser.zip', () => {
     const keys = 'zip,plus4,zipPlus4'.split(',');
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser()(k);
-      if (expected === 'invalid') {
-        expect(actual.value).toBe('invalid', k);
-      } else {
-        expect(actual.value).toIncludeKeys(keys);
-        expect(actual.value.zipPlus4).toBe(expected);
-      }
-      expect(actual.status).toBe(expected === 'invalid' ? 'rejected' : 'resolved');
+      parser()(k).value(({ status, value }) => {
+        if (expected === 'invalid') {
+          expect(value).toBe('invalid', k);
+        } else {
+          expect(value).toIncludeKeys(keys);
+          expect(value.zipPlus4).toBe(expected);
+        }
+        expect(status).toBe(expected === 'invalid' ? 'rejected' : 'resolved');
+      });
     });
   });
 
@@ -67,9 +70,10 @@ describe('parser.zip', () => {
     const notOdd = ({ zip }) => parseInt(zip, 10) % 2;
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ validate: notOdd })(k);
-      expect(expected === 'validate' ? actual.value : actual.value.zip).toBe(expected);
-      expect(actual.status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
+      parser({ validate: notOdd })(k).value(({ status, value }) => {
+        expect(expected === 'validate' ? value : value.zip).toBe(expected);
+        expect(status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
+      });
     });
   });
 });

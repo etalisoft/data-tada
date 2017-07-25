@@ -27,13 +27,15 @@ describe('parser.email', () => {
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
-      const required = parser({ required: true })(VALUES[k]);
-      expect(required.value).toBe('required');
-      expect(required.status).toBe('rejected');
+      parser({ required: true })(VALUES[k]).value(({ status, value }) => {
+        expect(value).toBe('required');
+        expect(status).toBe('rejected');
+      });
 
-      const notRequired = parser({ required: false })(VALUES[k]);
-      expect(notRequired.value).toBe(expected, msg(k, expected, notRequired));
-      expect(notRequired.status).toBe('resolved');
+      parser({ required: false })(VALUES[k]).value(({ status, value }) => {
+        expect(value).toBe(expected, msg(k, expected, value));
+        expect(status).toBe('resolved');
+      });
     });
   });
 
@@ -44,9 +46,10 @@ describe('parser.email', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ minLength: 8 })(k);
-      expect(actual.status).toBe(expected === 'minLength' ? 'rejected' : 'resolved');
-      expect(expected === 'minLength' ? actual.value : actual.value.email).toBe(expected);
+      parser({ minLength: 8 })(k).value(({ status, value }) => {
+        expect(status).toBe(expected === 'minLength' ? 'rejected' : 'resolved');
+        expect(expected === 'minLength' ? value : value.email).toBe(expected);
+      });
     });
   });
 
@@ -57,9 +60,10 @@ describe('parser.email', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ maxLength: 7 })(k);
-      expect(actual.status).toBe(expected === 'maxLength' ? 'rejected' : 'resolved');
-      expect(expected === 'maxLength' ? actual.value : actual.value.email).toBe(expected);
+      parser({ maxLength: 7 })(k).value(({ status, value }) => {
+        expect(status).toBe(expected === 'maxLength' ? 'rejected' : 'resolved');
+        expect(expected === 'maxLength' ? value : value.email).toBe(expected);
+      });
     });
   });
 
@@ -67,18 +71,21 @@ describe('parser.email', () => {
     const defaultParser = parser();
     const customParser = parser({ regex: /^\w+@b\.com$/i });
     [defaultParser, customParser].forEach(p => {
-      const bad = defaultParser('o.O');
-      expect(bad.status).toBe('rejected');
-      expect(bad.value).toBe('regex');
+      defaultParser('o.O').value(({ status, value }) => {
+        expect(status).toBe('rejected');
+        expect(value).toBe('regex');
+      });
 
-      const valid = p('a@b.com');
-      expect(valid.status).toBe('resolved');
-      expect(valid.value.email).toBe('a@b.com');
+      p('a@b.com').value(({ status, value }) => {
+        expect(status).toBe('resolved');
+        expect(value.email).toBe('a@b.com');
+      });
 
       if (p === customParser) {
-        const invalid = customParser('b@a.com');
-        expect(invalid.status).toBe('rejected');
-        expect(invalid.value).toBe('regex');
+        customParser('b@a.com').value(({ status, value }) => {
+          expect(status).toBe('rejected');
+          expect(value).toBe('regex');
+        });
       }
     });
   });
@@ -90,9 +97,10 @@ describe('parser.email', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ notRegex: /@aol.com$/i })(k);
-      expect(actual.status).toBe(expected === 'notRegex' ? 'rejected' : 'resolved');
-      expect(expected === 'notRegex' ? actual.value : actual.value.email).toBe(expected);
+      parser({ notRegex: /@aol.com$/i })(k).value(({ status, value}) => {
+        expect(status).toBe(expected === 'notRegex' ? 'rejected' : 'resolved');
+        expect(expected === 'notRegex' ? value : value.email).toBe(expected);
+      });
     });
   });
 
@@ -104,9 +112,10 @@ describe('parser.email', () => {
     const onlyLowerCase = v => v === v.toLowerCase();
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ validate: onlyLowerCase })(k);
-      expect(actual.status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
-      expect(expected === 'validate' ? actual.value : actual.value.email).toBe(expected);
+      parser({ validate: onlyLowerCase })(k).value(({ status, value }) => {
+        expect(status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
+        expect(expected === 'validate' ? value : value.email).toBe(expected);
+      });
     });
   });
 });

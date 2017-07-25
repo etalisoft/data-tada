@@ -27,13 +27,15 @@ describe('parser.string', () => {
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
-      const required = parser({ required: true })(VALUES[k]);
-      expect(required.value).toBe('required');
-      expect(required.status).toBe('rejected');
+      parser({ required: true })(VALUES[k]).value(({ status, value }) => {
+        expect(value).toBe('required');
+        expect(status).toBe('rejected');
+      });
 
-      const notRequired = parser({ required: false })(VALUES[k]);
-      expect(notRequired.value).toBe(expected, msg(k, expected, notRequired));
-      expect(notRequired.status).toBe('resolved');
+      parser({ required: false })(VALUES[k]).value(({ status, value }) => {
+        expect(value).toBe(expected, msg(k, expected, value));
+        expect(status).toBe('resolved');
+      });
     });
   });
 
@@ -44,9 +46,10 @@ describe('parser.string', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ minLength: 4 })(k);
-      expect(actual.value).toBe(expected);
-      expect(actual.status).toBe(expected === 'minLength' ? 'rejected' : 'resolved');
+      parser({ minLength: 4 })(k).value(({ status, value }) => {
+        expect(value).toBe(expected);
+        expect(status).toBe(expected === 'minLength' ? 'rejected' : 'resolved');
+      });
     });
   });
 
@@ -57,9 +60,10 @@ describe('parser.string', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ maxLength: 3 })(k);
-      expect(actual.value).toBe(expected);
-      expect(actual.status).toBe(expected === 'maxLength' ? 'rejected' : 'resolved');
+      parser({ maxLength: 3 })(k).value(({ status, value }) => {
+        expect(value).toBe(expected);
+        expect(status).toBe(expected === 'maxLength' ? 'rejected' : 'resolved');
+      });
     });
   });
 
@@ -70,9 +74,10 @@ describe('parser.string', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ regex: /^valid$/ })(k);
-      expect(actual.value).toBe(expected);
-      expect(actual.status).toBe(expected === 'regex' ? 'rejected' : 'resolved');
+      parser({ regex: /^valid$/ })(k).value(({ status, value }) => {
+        expect(value).toBe(expected);
+        expect(status).toBe(expected === 'regex' ? 'rejected' : 'resolved');
+      });
     });
   });
 
@@ -83,9 +88,10 @@ describe('parser.string', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ notRegex: /^invalid$/ })(k);
-      expect(actual.value).toBe(expected);
-      expect(actual.status).toBe(expected === 'notRegex' ? 'rejected' : 'resolved');
+      parser({ notRegex: /^invalid$/ })(k).value(({ status, value }) => {
+        expect(value).toBe(expected);
+        expect(status).toBe(expected === 'notRegex' ? 'rejected' : 'resolved');
+      });
     });
   });
 
@@ -97,9 +103,10 @@ describe('parser.string', () => {
     const onlyLowerCase = v => v === v.toLowerCase();
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      const actual = parser({ validate: onlyLowerCase })(k);
-      expect(actual.value).toBe(expected);
-      expect(actual.status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
+      parser({ validate: onlyLowerCase })(k).value(({ status, value }) => {
+        expect(value).toBe(expected);
+        expect(status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
+      });
     });
   });
 });

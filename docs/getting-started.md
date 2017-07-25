@@ -16,16 +16,26 @@ const promise = emailParser('john@doe.com');
 The parser is modeled after promises.  This means you can chain `then()` and `catch()` methods to further process the
 data. By default the parsers do not use a normal `Promise` object though.  Instead they use
 [SyncPromise](api.sync-promise.md), which resolves immediately.  In addition to `then` and `catch` methods,
-SyncPromise also provides the `value` and `status` properties.
+SyncPromise also provides the `value` function.
 
 ```js
 const goodEmail = emailParser('john@doe.com');
-goodEmail.status; // 'resolved'
-goodEmail.value;  // { email: 'john@doe.com', user: 'john', domain: 'doe.com' }
+// calling value() will return the current value.
+goodEmail.value(); // { email: 'john@doe.com', user: 'john', domain: 'doe.com' }
+// calling value(fn) will let you preview the status/value and return a value.
+goodEmail.value(result => {
+  result.status; // 'resolved';
+  result.value;  // { email: 'john@doe.com', user: 'john', domain: 'doe.com' }
+  return result.value.email;
+}); // 'john@doe.com'
 
 const badEmail = emailParser('not an email');
-badEmail.status; // 'rejected'
-badEmail.value;  // 'invalid'
+badEmail.value(); // 'invalid'
+badEmail.value(result => {
+  result.status; // 'rejected'
+  result.value; // 'invalid';
+  return result.value;
+}); // 'invalid'
 ```
 
 ### Formatting Data
@@ -36,15 +46,17 @@ import { parser, format } from 'data-tada';
 
 const emailParser = parser.email();
 
-const result = emailParser('john@doe.com').then(format.email.mask);
-result.status; // 'resolved'
-result.value;  // '****@doe.com'
+emailParser('john@doe.com').then(format.email.mask).value(result => {
+  result.status; // 'resolved'
+  result.value;  // '****@doe.com'
+});
 
 // Custom format function for reversing a string
 const reverseEmail = ({ email }) => email.split('').reverse().join('');
-const another = emailParser('john@doe.com').then(reverseEmail);
-result.status; // 'resolved'
-result.value;  // 'moc.eod@nhoj'
+emailParser('john@doe.com').then(reverseEmail).value(result => {
+  result.status; // 'resolved'
+  result.value;  // 'moc.eod@nhoj'
+});
 ```
 
 ### Validating Data
@@ -79,5 +91,5 @@ const password = document.getElementById('password').value;
 const passwordError = passwordParser(password)
   .then(str => '') // successfully parsed?  Just return empty string
   .catch(error => PASSWORD_ERROR[error]) // error?  return the appropriate error message
-  .value;
+  .value();
 ```
