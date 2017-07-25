@@ -6,4 +6,5 @@
 `npm install --save data-tada`
 
 ## Documentation
-Coming soon...
+- [Getting Started](docs/getting-started.md)
+- [API](docs/api.md)
