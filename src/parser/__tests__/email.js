@@ -27,7 +27,7 @@ describe('parser.email', () => {
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
-      const required = parser({ required: false })(VALUES[k]);
+      const required = parser({ required: true })(VALUES[k]);
       expect(required.value).toBe('required');
       expect(required.status).toBe('rejected');
 
