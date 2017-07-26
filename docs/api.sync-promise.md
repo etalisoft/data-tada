@@ -103,7 +103,7 @@ const link = arconymParser('SCUBA')
 This is a bit of a contrived example, but here we parse 'SCUBA' and then it transforms through each `then` function:
 ```js
 'SCUBA'
-{ lower: 'scuba', upper: 'scuba' }
-{ lower: 'scuba', upper: 'scuba', url: 'https://en.wiktionary.org/wiki/scuba' }
+{ lower: 'scuba', upper: 'SCUBA' }
+{ lower: 'scuba', upper: 'SCUBA', url: 'https://en.wiktionary.org/wiki/scuba' }
 <a href="https://en.wiktionary.org/wiki/scuba">SCUBA</a>
 ```
