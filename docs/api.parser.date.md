@@ -22,8 +22,7 @@ Parses dates using the [Moment.js library](https://momentjs.com/).
 }
 ```
 
-- `model` - The promise model to use.  [SyncPromise](api.sync-promise.md) by default.  To use native asynchronous
-promises, specify: `parser.date({ model: Promise })`
+- `model` - The promise model to use.  [SyncPromise](api.sync-promise.md) by default.  To use native asynchronous promises, specify: `parser.date({ model: Promise })`
 - `required` - Rejectable.  If required=true and the input is falsy the promise will `reject('required')`.
 - `min` - Rejectable.  If min is specified and input < min the promise will `reject('min')`.  The value can be: 'now', 'today', a value supported by [moment](https://momentjs.com/docs/#/parsing/).  The value can also be a function that returns one of the acceptable values.
 - `max` - Rejectable.  If max is specified and input > max the promise will `reject('max')`.  The value can be: 'now', 'today', a value supported by moment.  The value can also be a function that returns one of the acceptable values.

@@ -4,6 +4,8 @@
 
 ### Parsers
 
+The following parsers have been provided.
+
 #### `parser.date`
 Parses dates using the [Moment.js library](https://momentjs.com/).  For usage and examples, [click here](api.parser.date.md).
 
