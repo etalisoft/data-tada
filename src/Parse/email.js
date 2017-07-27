@@ -14,9 +14,12 @@ export default (
     regex = w3cEmail,
     notRegex,
     validate,
+    messages,
   } = {}
 ) => value => {
-  return createStringParser({ model, required, minLength, maxLength, regex, notRegex, validate })(value).then(email => {
+  return createStringParser({ model, required, minLength, maxLength, regex, notRegex, validate, messages })(
+    value
+  ).then(email => {
     if (!email) {
       return email;
     }

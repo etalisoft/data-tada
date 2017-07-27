@@ -1,9 +1,9 @@
 import expect from 'expect';
 
 import SyncPromise from '../../SyncPromise';
-import parser from '../phone.js';
+import parser from '../ssn.js';
 
-describe('parser.phone', () => {
+describe('parser.ssn', () => {
   it('should return a SyncPromise', () => {
     const result = parser()();
     expect(result).toBeA(SyncPromise);
@@ -28,7 +28,7 @@ describe('parser.phone', () => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
       parser({ required: true })(VALUES[k]).value(({ status, value }) => {
-        expect(value).toBe('required');
+        expect(value).toBe('Required');
         expect(status).toBe('rejected');
       });
 
@@ -41,41 +41,37 @@ describe('parser.phone', () => {
 
   it('should reject on invalid', () => {
     const VALUES = {
-      '1234567': '123-4567',
-      '12345678': 'invalid',
-      '8001234567': '(800) 123-4567',
-      '18001234567': '(800) 123-4567',
-      '28001234567': 'invalid',
-      'Work: 123-4567 extension 9876': '123-4567 ext. 9876',
-      '800-555-1212[x123]': '(800) 555-1212 ext. 123',
-      'o.O': 'invalid',
+      '12345678': 'Invalid',
+      '123456789': '123-45-6789',
+      '|123|12|1234|': '123-12-1234',
+      '1234567890': 'Invalid',
     };
-    const keys = 'areaCode,local3,last4,extension'.split(',');
+    const keys = 'ssn,first3,middle2,last4'.split(',');
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
       parser()(k).value(({ status, value }) => {
-        if (expected === 'invalid') {
-          expect(value).toBe('invalid');
+        if (expected === 'Invalid') {
+          expect(value).toBe('Invalid');
         } else {
           expect(value).toIncludeKeys(keys);
-          expect(value.phone).toBe(expected);
+          expect(value.ssn).toBe(expected);
         }
-        expect(status).toBe(expected === 'invalid' ? 'rejected' : 'resolved');
+        expect(status).toBe(expected === 'Invalid' ? 'rejected' : 'resolved');
       });
     });
   });
 
   it('should resolve/reject on validate', () => {
     const VALUES = {
-      '123-456-6789': '(123) 456-6789',
-      '800-456-6789': 'validate',
+      '666-45-6789': 'Invalid',
+      '123-45-6789': '123-45-6789',
     };
-    const not800Number = ({ areaCode }) => areaCode !== '800';
+    const not666 = ({ first3 }) => first3 !== '666';
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      parser({ validate: not800Number })(k).value(({ status, value }) => {
-        expect(expected === 'validate' ? value : value.phone).toBe(expected);
-        expect(status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
+      parser({ validate: not666 })(k).value(({ status, value }) => {
+        expect(expected === 'Invalid' ? value : value.ssn).toBe(expected);
+        expect(status).toBe(expected === 'Invalid' ? 'rejected' : 'resolved');
       });
     });
   });

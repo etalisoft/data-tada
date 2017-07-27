@@ -6,89 +6,89 @@
 
 The following parsers have been provided.
 
-#### `parser.date`
-Parses dates using the [Moment.js library](https://momentjs.com/).  For usage and examples, [click here](api.parser.date.md).
+#### [`Parse.date`](api.parse.date.md)
+Parses dates using the [Moment.js library](https://momentjs.com/).
 
-#### `parser.email`
-Parses emails.  For usage and examples, [click here](api.parser.email.md).
+#### [`Parse.email`](api.parse.email.md)
+Parses emails.
 
-#### `parser.number`
-Parses numbers.  For usage and examples, [click here](api.parser.number.md).
+#### [`Parse.number`](api.parse.number.md)
+Parses numbers.
 
-#### `parser.phone`
-Parses phones.  For usage and examples, [click here](api.parser.phone.md).
+#### [`Parse.phone`](api.parse.phone.md)
+Parses phones.
 
-#### `parser.ssn`
-Parses SSNs.  For usage and examples, [click here](api.parser.ssn.md).
+#### [`Parse.ssn`](api.parse.ssn.md)
+Parses SSNs.
 
-#### `parser.string`
-Parses strings.  For usage and examples, [click here](api.parser.string.md).
+#### [`Parse.string`](api.parse.string.md)
+Parses strings.
 
-#### `parser.zip`
-Parses ZIPs.  For usage and examples, [click here](api.parser.zip.md).
+#### [`Parse.zip`](api.parse.zip.md)
+Parses ZIPs.
 
 ### Formatters
 
 #### Date
-- `format.date.default` - 'MM/dd/yyyy'
-- `format.date.ISO` - based on moment.toISOString()
-- `localeDateShort` - based on moment.format('l')
-- `localeDate` - based on moment.format('L')
-- `localeTimeShort` - based on moment.format('LT')
-- `localeTime` - based on moment.format('LTS')
-- `h:mm tt`
-- `M/d`
-- `M/d/yyyy`
-- `MM/dd/yyyy`
-- `M/d/yyyy h:mm tt`
-- `MM/dd/yyyy h:mm tt`
-- `MMMM d, yyyy`
+- `Format.date.default` - 'MM/dd/yyyy'
+- `Format.date.ISO` - based on moment.toISOString()
+- `Format.date.localeDateShort` - based on moment.format('l')
+- `Format.date.localeDate` - based on moment.format('L')
+- `Format.date.localeTimeShort` - based on moment.format('LT')
+- `Format.date.localeTime` - based on moment.format('LTS')
+- `Format.date['h:mm tt']`
+- `Format.date['M/d']`
+- `Format.date['M/d/yyyy']`
+- `Format.date['MM/dd/yyyy']`
+- `Format.date['M/d/yyyy h:mm tt']`
+- `Format.date['MM/dd/yyyy h:mm tt']`
+- `Format.date['MMMM d, yyyy']`
 
 #### Email
-- `format.email.default` - john@doe.com
-- `format.email.mask` - ****@doe.com
-- `format.email.maskWith('#')` - ####@doe.com
+- `Format.email.default` - john@doe.com
+- `Format.email.mask` - ****@doe.com
+- `Format.email.maskWith('#')` - ####@doe.com
 
 #### Number
-- `format.number.default` - identity function
-- `format.number.abs` - Math.abs
-- `format.number.floor` - Math.floor
-- `format.number.ceil` - Math.ceil
-- `format.number.trunc` - Math.trunc
-- `format.number.round` - Math.round
-- `format.number.fixed2` - Number.toFixed(2)
-- `format.number.exponential2` - Number.toExponential(2)
-- `format.number.exponential(n)` - Number.toExponential(n)
-- `format.number.usd` - Number.toLocaleString('en-US', ...)
-- `format.number.locale` - Number.toLocaleString()
-- `format.number.binary` - Number.toString(2)
-- `format.number.octal` - Number.toString(8)
-- `format.number.hex` - Number.toString(16)
-- `format.number.base(n)` - Number.toString(n)
+- `Format.number.default` - identity function
+- `Format.number.abs` - Math.abs
+- `Format.number.floor` - Math.floor
+- `Format.number.ceil` - Math.ceil
+- `Format.number.trunc` - Math.trunc
+- `Format.number.round` - Math.round
+- `Format.number.fixed2` - Number.toFixed(2)
+- `Format.number.exponential2` - Number.toExponential(2)
+- `Format.number.exponential(n)` - Number.toExponential(n)
+- `Format.number.usd` - Number.toLocaleString('en-US', ...)
+- `Format.number.locale` - Number.toLocaleString()
+- `Format.number.binary` - Number.toString(2)
+- `Format.number.octal` - Number.toString(8)
+- `Format.number.hex` - Number.toString(16)
+- `Format.number.base(n)` - Number.toString(n)
 
 #### Phone
-- `format.phone.default` - area code and extension included with phone number
-- `format.phone.localOnly` - only local phone number
+- `Format.phone.default` - area code and extension included with phone number
+- `Format.phone.localOnly` - only local phone number
 
 #### SSN
-- `format.ssn.default` - 123-45-6789
-- `format.ssn.last4` - 6789
-- `format.ssn.mask` - ***-**-6789
-- `format.ssn.maskWith('#')` - ###-##-6789
+- `Format.ssn.default` - 123-45-6789
+- `Format.ssn.last4` - 6789
+- `Format.ssn.mask` - ***-**-6789
+- `Format.ssn.maskWith('#')` - ###-##-6789
 
 #### String
-- `format.string.default` - identity function
-- `format.string.lower` - String.toLowerCase
-- `format.string.upper` - String.toUpperCase
-- `format.string.trim` - String.trim
-- `format.string.title` - "simple" title case
-- `format.string.toBase64` - converts a string to base64
-- `format.string.fromBase64` - converts base64 to a string
+- `Format.string.default` - identity function
+- `Format.string.lower` - String.toLowerCase
+- `Format.string.upper` - String.toUpperCase
+- `Format.string.trim` - String.trim
+- `Format.string.title` - "simple" title case
+- `Format.string.toBase64` - converts a string to base64
+- `Format.string.fromBase64` - converts base64 to a string
 
 #### Zip
-- `format.zip.default` - #####-####
-- `format.zip.zip` - #####
-- `format.zip.zipPlus4` - #####-####
+- `Format.zip.default` - #####-####
+- `Format.zip.zip` - #####
+- `Format.zip.zipPlus4` - #####-####
 
 ### SyncPromise
 SyncPromise is modeled after a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).

@@ -28,7 +28,7 @@ describe('parser.zip', () => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
       parser({ required: true })(VALUES[k]).value(({ status, value }) => {
-        expect(value).toBe('required');
+        expect(value).toBe('Required');
         expect(status).toBe('rejected');
       });
 
@@ -41,23 +41,23 @@ describe('parser.zip', () => {
 
   it('should reject on invalid', () => {
     const VALUES = {
-      '1234': 'invalid',
+      '1234': 'Invalid',
       '12345': '12345',
-      '12345678': 'invalid',
+      '12345678': 'Invalid',
       '123456789': '12345-6789',
-      '1234567890': 'invalid',
+      '1234567890': 'Invalid',
     };
     const keys = 'zip,plus4,zipPlus4'.split(',');
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
       parser()(k).value(({ status, value }) => {
-        if (expected === 'invalid') {
-          expect(value).toBe('invalid', k);
+        if (expected === 'Invalid') {
+          expect(value).toBe('Invalid', k);
         } else {
           expect(value).toIncludeKeys(keys);
           expect(value.zipPlus4).toBe(expected);
         }
-        expect(status).toBe(expected === 'invalid' ? 'rejected' : 'resolved');
+        expect(status).toBe(expected === 'Invalid' ? 'rejected' : 'resolved');
       });
     });
   });
@@ -65,14 +65,14 @@ describe('parser.zip', () => {
   it('should resolve/reject on validate', () => {
     const VALUES = {
       '12345': '12345',
-      '12346': 'validate',
+      '12346': 'Invalid',
     };
     const notOdd = ({ zip }) => parseInt(zip, 10) % 2;
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
       parser({ validate: notOdd })(k).value(({ status, value }) => {
-        expect(expected === 'validate' ? value : value.zip).toBe(expected);
-        expect(status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
+        expect(expected === 'Invalid' ? value : value.zip).toBe(expected);
+        expect(status).toBe(expected === 'Invalid' ? 'rejected' : 'resolved');
       });
     });
   });

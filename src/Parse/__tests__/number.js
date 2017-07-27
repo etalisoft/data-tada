@@ -28,7 +28,7 @@ describe('parser.number', () => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
       parser({ required: true })(VALUES[k]).value(({ status, value }) => {
-        expect(value).toBe('required');
+        expect(value).toBe('Required');
         expect(status).toBe('rejected');
       });
 
@@ -44,12 +44,12 @@ describe('parser.number', () => {
       '12345.6789': 12345.6789,
       '+12345.6789': 12345.6789,
       '-12345.6789': -12345.6789,
-      '...': 'invalid',
+      '...': 'Invalid',
       'Amount: $12,345.67': 12345.67,
       'Amount: $-12,345.67': -12345.67,
       'Amount: -$12,345.67': -12345.67,
       'Pi: +314e-2': 3.14,
-      'o.O': 'invalid',
+      'o.O': 'Invalid',
       '192.168.1.1': 192.168,
     };
     const msg = (k, expected, actual) => `${k}: Expected ${JSON.stringify(expected)} to be ${JSON.stringify(actual)}`;
@@ -57,21 +57,21 @@ describe('parser.number', () => {
       const expected = VALUES[k];
       parser()(k).value(({ status, value }) => {
         expect(value).toBe(expected, msg(k, expected, value));
-        expect(status).toBe(expected === 'invalid' ? 'rejected' : 'resolved');
+        expect(status).toBe(expected === 'Invalid' ? 'rejected' : 'resolved');
       });
     });
   });
 
   it('should resolve/reject on min', () => {
     const VALUES = {
-      '123': 'min',
+      '123': 'Too Low',
       '124': 124,
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
       parser({ min: 124 })(k).value(({ status, value }) => {
         expect(value).toBe(expected);
-        expect(status).toBe(expected === 'min' ? 'rejected' : 'resolved');
+        expect(status).toBe(expected === 'Too Low' ? 'rejected' : 'resolved');
       });
     });
   });
@@ -79,13 +79,13 @@ describe('parser.number', () => {
   it('should resolve/reject on max', () => {
     const VALUES = {
       '123': 123,
-      '124': 'max',
+      '124': 'Too High',
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
       parser({ max: 123 })(k).value(({ status, value }) => {
         expect(value).toBe(expected);
-        expect(status).toBe(expected === 'max' ? 'rejected' : 'resolved');
+        expect(status).toBe(expected === 'Too High' ? 'rejected' : 'resolved');
       });
     });
   });
@@ -93,14 +93,14 @@ describe('parser.number', () => {
   it('should resolve/reject on validate', () => {
     const VALUES = {
       '123': 123,
-      '124': 'validate',
+      '124': 'Invalid',
     };
     const onlyOdd = v => v % 2;
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
       parser({ validate: onlyOdd })(k).value(({ status, value }) => {
         expect(value).toBe(expected);
-        expect(status).toBe(expected === 'validate' ? 'rejected' : 'resolved');
+        expect(status).toBe(expected === 'Invalid' ? 'rejected' : 'resolved');
       });
     });
   });

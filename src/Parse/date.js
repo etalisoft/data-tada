@@ -1,8 +1,17 @@
 import moment from 'moment';
 
+import Message from '../Message';
 import SyncPromise from '../SyncPromise';
 
 const FORMATS = ['L', moment.ISO_8601];
+
+const MESSAGES = {
+  required: 'Required',
+  invalid: 'Invalid',
+  min: 'Too Early',
+  max: 'Too Late',
+  validate: 'Invalid',
+};
 
 const render = m => ({
   moment: m,
@@ -67,42 +76,39 @@ const parse = (v, ...args) => {
 };
 
 export default (
-  { model = SyncPromise, required = false, min, max, validate, formats = FORMATS, ...args } = {}
+  { model = SyncPromise, required = false, min, max, validate, messages, formats = FORMATS, ...args } = {}
 ) => value =>
   new model((resolve, reject) => {
+    const message = new Message(MESSAGES, messages).context(value);
+    const rejectWith = err => reject(message.get(err));
+
     let result = value;
     result = render(parse(result, formats, ...args));
 
     if (!value) {
-      return required ? reject('required') : resolve(result);
+      return required ? rejectWith('required') : resolve(result);
     }
 
     if (!result.moment.isValid()) {
-      return reject('invalid');
+      return rejectWith('invalid');
     }
 
     if (min) {
       const dt = parse(min, formats, ...args);
-      if (!dt.isValid()) {
-        return reject('invalidMin');
-      }
       if (result.moment.isBefore(dt)) {
-        return reject('min');
+        return rejectWith('min');
       }
     }
 
     if (max) {
       const dt = parse(max, formats, ...args);
-      if (!dt.isValid()) {
-        return reject('invalidMax');
-      }
       if (result.moment.isAfter(dt)) {
-        return reject('max');
+        return rejectWith('max');
       }
     }
 
     if (validate instanceof Function && !validate(result)) {
-      return reject('validate');
+      return rejectWith('validate');
     }
 
     resolve(result);

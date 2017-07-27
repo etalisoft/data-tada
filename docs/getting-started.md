@@ -28,14 +28,20 @@ goodEmail.value(result => {
   result.value;  // { email: 'john@doe.com', user: 'john', domain: 'doe.com' }
   return result.value.email;
 }); // 'john@doe.com'
+// calling value.resolved() will return the value only if the status is currently 'resolved'
+goodEmail.value.resolved(); // { email: 'john@doe.com', user: 'john', domain: 'doe.com' }
+// calling value.rejected() will return the value only if the status is currently 'rejected'
+goodEmail.value.rejected(); // undefined
 
 const badEmail = emailParser('not an email');
-badEmail.value(); // 'invalid'
+badEmail.value(); // 'Invalid'
 badEmail.value(result => {
   result.status; // 'rejected'
-  result.value; // 'invalid';
+  result.value; // 'Invalid';
   return result.value;
-}); // 'invalid'
+}); // 'Invalid'
+goodEmail.value.resolved(); // undefined
+goodEmail.value.rejected(); // 'Invalid'
 ```
 
 ### Formatting Data
@@ -71,25 +77,16 @@ const passwordParser = parser.string({
   regex: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/,
   notRegex: /password/i,
   validate: str => !str.includes('123'),
+  messages: {
+    required: 'Required. Please enter a password.',
+    minLength: 'Password must be at least 8 characters.',
+    regex: 'Password must contain a digit, lowercase, and uppercase.',
+    validate: 'Password cannot contain 123.',
+  },
 });
 
-/*
-Invalid data is rejected with the reason ('required', 'minLength', ..., 'validate').
-Because the errors are predictable, the `catch` function can be used to generate error messages.
-*/
-const PASSWORD_ERROR = {
-  required: 'The password field is required.',
-  minLength: 'The password must be 8 characters or more.',
-  maxLength: 'The password must be 20 characters or less.',
-  regex: 'The password must contain a digit, lowercase, and upper case letters.',
-  notRegex: 'The password cannot contain the word "password".',
-  validate: 'The password cannot contain "123".',
-};
 const password = document.getElementById('password').value;
 // If we wanted to parse the password and retrieve the error message if invalid, or an empty string if valid
 // we could do the following.
-const passwordError = passwordParser(password)
-  .then(str => '') // successfully parsed?  Just return empty string
-  .catch(error => PASSWORD_ERROR[error]) // error?  return the appropriate error message
-  .value();
+const passwordError = passwordParser(password).value.rejected();
 ```

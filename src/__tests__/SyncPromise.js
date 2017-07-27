@@ -103,7 +103,7 @@ describe('SyncPromise', () => {
     }).value(({ status, value }) => {
       expect(status).toBe('rejected');
       expect(value).toBe('i');
-    })
+    });
   });
 
   it('should call `catch` if a `then` throws an error', () => {
@@ -168,6 +168,36 @@ describe('SyncPromise', () => {
     promise.value(({ status, value }) => {
       expect(status).toBe('resolved');
       expect(value).toBe(2);
-    })
+    });
+  });
+
+  it('should return the current value if `value` is called without an argument', () => {
+    expect(new SyncPromise(resolve => resolve(3)).value()).toBe(3);
+    expect(new SyncPromise((_, reject) => reject(5)).value()).toBe(5);
+  });
+
+  it('should pass the current status/value to the fn passed to `value`', () => {
+    new SyncPromise(resolve => resolve(21)).value(({ status, value }) => {
+      expect(status).toBe('resolved');
+      expect(value).toBe(21);
+    });
+    new SyncPromise((_, reject) => reject(12)).value(({ status, value }) => {
+      expect(status).toBe('rejected');
+      expect(value).toBe(12);
+    });
+  });
+
+  it('should return the result of the fn passed to `value`', () => {
+    expect(new SyncPromise(resolve => resolve(15)).value(() => 5)).toBe(5);
+  });
+
+  it('should return the resolved value only if status=resolved when `value.resolved` is called', () => {
+    expect(new SyncPromise(resolve => resolve(1)).value.resolved()).toBe(1);
+    expect(new SyncPromise((_, reject) => reject(2)).value.resolved()).toNotExist();
+  });
+
+  it('should return the rejected value only if status=resolved when `value.rejected` is called', () => {
+    expect(new SyncPromise(resolve => resolve(1)).value.rejected()).toNotExist();
+    expect(new SyncPromise((_, reject) => reject(2)).value.rejected()).toBe(2);
   });
 });

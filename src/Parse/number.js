@@ -1,4 +1,13 @@
+import Message from '../Message';
 import SyncPromise from '../SyncPromise';
+
+const MESSAGES = {
+  required: 'Required',
+  invalid: 'Invalid',
+  min: 'Too Low',
+  max: 'Too High',
+  validate: 'Invalid',
+};
 
 const tryParseFloat = value => {
   const result = parseFloat(value);
@@ -26,14 +35,18 @@ export default (
     min = Number.NEGATIVE_INFINITY,
     max = Number.MAX_VALUE,
     validate,
+    messages,
     parse = tryParseFloat,
     scrub = scrubFloat,
   } = {}
 ) => value =>
   new model((resolve, reject) => {
+    const message = new Message(MESSAGES, messages).context(value);
+    const rejectWith = err => reject(message.get(err));
+
     let result = value && value.toString instanceof Function ? value.toString() : value;
     if (result === null || result === undefined || result === '') {
-      return required ? reject('required') : resolve(result);
+      return required ? rejectWith('required') : resolve(result);
     }
 
     result = parse(result);
@@ -42,19 +55,19 @@ export default (
     }
 
     if (isNaN(result)) {
-      return reject('invalid');
+      return rejectWith('invalid');
     }
 
     if (result < min) {
-      return reject('min');
+      return rejectWith('min');
     }
 
     if (result > max) {
-      return reject('max');
+      return rejectWith('max');
     }
 
     if (validate instanceof Function && !validate(result)) {
-      return reject('validate');
+      return rejectWith('validate');
     }
 
     return resolve(result);
