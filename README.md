@@ -8,3 +8,7 @@
 ## Documentation
 - [Getting Started](docs/getting-started.md)
 - [API](docs/api.md)
+
+## Code Sandboxes
+You can play around with `data-tada` in these sandbox versions.
+- [Examples](https://codesandbox.io/s/LLYpx8Qw)

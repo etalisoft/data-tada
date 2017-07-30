@@ -24,7 +24,7 @@ Parses dates using the [Moment.js library](https://momentjs.com/).
     max: 'Too Late',
     validate: 'Invalid',
   },
-  formats: ['L', moment.ISO_8601],
+  formats: ['MMM D, YYYY', 'L', moment.ISO_8601],
   ...args,
 }
 ```
