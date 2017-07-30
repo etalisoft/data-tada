@@ -84,7 +84,7 @@ export default (
     const message = new Message(MESSAGES, messages).context(context);
     const rejectWith = err => reject(message.get(err));
 
-    let result = value;
+    let result = (context.result = value);
     result = render(parse(result, formats, ...args));
 
     if (!value) {

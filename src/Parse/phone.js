@@ -37,7 +37,7 @@ export default ({ model = SyncPromise, required = false, validate, messages, par
       return required ? rejectWith('required') : resolve(result);
     }
 
-    result = parse(result);
+    result = context.result = parse(result);
 
     if (!result) {
       return rejectWith('invalid');

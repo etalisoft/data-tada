@@ -42,7 +42,7 @@ export default (
   } = {}
 ) =>
   createExecutionPlan(model)(value => (resolve, reject) => {
-    const context = { value, min, max };
+    const context = { value };
     const message = new Message(MESSAGES, messages).context(context);
     const rejectWith = err => reject(message.get(err));
 
@@ -51,7 +51,8 @@ export default (
       return required ? rejectWith('required') : resolve(result);
     }
 
-    result = parse(result);
+    result = context.result = parse(result);
+
     if (isNaN(result)) {
       result = parse(scrub(result));
     }
