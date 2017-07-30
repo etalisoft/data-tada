@@ -1,5 +1,6 @@
 import moment from 'moment';
 
+import createExecutionPlan from '../createExecutionPlan';
 import Message from '../Message';
 import SyncPromise from '../SyncPromise';
 
@@ -77,8 +78,8 @@ const parse = (v, ...args) => {
 
 export default (
   { model = SyncPromise, required = false, min, max, validate, messages, formats = FORMATS, ...args } = {}
-) => value =>
-  new model((resolve, reject) => {
+) =>
+  createExecutionPlan(model)(value => (resolve, reject) => {
     const message = new Message(MESSAGES, messages).context(value);
     const rejectWith = err => reject(message.get(err));
 

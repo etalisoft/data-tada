@@ -1,3 +1,4 @@
+import createExecutionPlan from '../createExecutionPlan';
 import Message from '../Message';
 import SyncPromise from '../SyncPromise';
 
@@ -23,8 +24,8 @@ const parseZip = value => {
   return null;
 };
 
-export default ({ model = SyncPromise, required = false, validate, messages, parse = parseZip } = {}) => value =>
-  new model((resolve, reject) => {
+export default ({ model = SyncPromise, required = false, validate, messages, parse = parseZip } = {}) =>
+  createExecutionPlan(model)(value => (resolve, reject) => {
     const message = new Message(MESSAGES, messages).context(value);
     const rejectWith = err => reject(message.get(err));
 

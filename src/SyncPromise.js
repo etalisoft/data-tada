@@ -6,7 +6,7 @@ const STATUS = {
 
 export default function SyncPromise(resolver) {
   if (!this || this === window || this === global) return new SyncPromise(resolver);
-  if (!(resolver instanceof Function)) throw new TypeError(`SyncPromise resolver ${resolver} is not a function`);
+  if (!(resolver instanceof Function)) throw new TypeError(`SyncPromise resolver ${resolver} is not a function.`);
 
   let status = 0;
   let value;

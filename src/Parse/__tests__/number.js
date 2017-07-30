@@ -104,4 +104,10 @@ describe('parser.number', () => {
       });
     });
   });
+
+  it('should support execution plan then/catch chains before parsing values', () => {
+    const plan = parser().then(v => Math.abs(v)).then(v => v * 2);
+    const promise = plan('-123').then(v => `#=${v}`);
+    expect(promise.value()).toBe('#=246');
+  });
 });

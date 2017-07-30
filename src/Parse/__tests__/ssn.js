@@ -75,4 +75,10 @@ describe('parser.ssn', () => {
       });
     });
   });
+
+  it('should support execution plan then/catch chains before parsing values', () => {
+    const plan = parser().then(({ last4 }) => last4 * 2);
+    const promise = plan('987654321').then(v => `2*Last4=${v}`);
+    expect(promise.value()).toBe('2*Last4=8642');
+  });
 });

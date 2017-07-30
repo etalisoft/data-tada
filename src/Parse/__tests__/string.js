@@ -109,4 +109,10 @@ describe('parser.string', () => {
       });
     });
   });
+
+  it('should support execution plan then/catch chains before parsing values', () => {
+    const plan = parser().then(s => s.trim().toLowerCase());
+    const promise = plan('  O.  ').then(v => `${v}O`);
+    expect(promise.value()).toBe('o.O');
+  });
 });

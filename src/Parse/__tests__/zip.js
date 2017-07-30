@@ -76,4 +76,10 @@ describe('parser.zip', () => {
       });
     });
   });
+
+  it('should support execution plan then/catch chains before parsing values', () => {
+    const plan = parser().then(({ plus4 }) => plus4 * 2);
+    const promise = plan('987654321').then(v => `2*Plus4=${v}`);
+    expect(promise.value()).toBe('2*Plus4=8642');
+  });
 });

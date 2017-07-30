@@ -1,3 +1,4 @@
+import createExecutionPlan from '../createExecutionPlan';
 import Message from '../Message';
 import SyncPromise from '../SyncPromise';
 
@@ -21,8 +22,8 @@ export default (
     validate,
     messages,
   } = {}
-) => value =>
-  new model((resolve, reject) => {
+) =>
+  createExecutionPlan(model)(value => (resolve, reject) => {
     let result = value && value.toString instanceof Function ? value.toString() : value;
 
     const message = new Message(MESSAGES, messages).context(value);

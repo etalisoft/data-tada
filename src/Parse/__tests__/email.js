@@ -118,4 +118,10 @@ describe('parser.email', () => {
       });
     });
   });
+
+  it('should support execution plan then/catch chains before parsing values', () => {
+    const plan = parser().then(({ user }) => user.toUpperCase());
+    const promise = plan('john@doe.com').then(v => `USER=${v}`);
+    expect(promise.value()).toBe('USER=JOHN');
+  });
 });

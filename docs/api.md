@@ -3,8 +3,7 @@
 ## API
 
 ### Parsers
-
-The following parsers have been provided.
+The following parsers have been provided for you.  For an overview on how the default parsers work, [click here](api.parse.md).
 
 #### [`Parse.date`](api.parse.date.md)
 Parses dates using the [Moment.js library](https://momentjs.com/).

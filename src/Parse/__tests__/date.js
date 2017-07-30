@@ -110,4 +110,10 @@ describe('parser.date', () => {
       });
     });
   });
+
+  it('should support execution plan then/catch chains before parsing values', () => {
+    const plan = parser().then(({ YYYY }) => YYYY).then(v => v * 2);
+    const promise = plan('2000-01-01').then(v => `2*Year=${v}`);
+    expect(promise.value()).toBe('2*Year=4000');
+  });
 });

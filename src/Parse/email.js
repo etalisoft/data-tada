@@ -16,10 +16,8 @@ export default (
     validate,
     messages,
   } = {}
-) => value => {
-  return createStringParser({ model, required, minLength, maxLength, regex, notRegex, validate, messages })(
-    value
-  ).then(email => {
+) =>
+  createStringParser({ model, required, minLength, maxLength, regex, notRegex, validate, messages }).then(email => {
     if (!email) {
       return email;
     }
@@ -27,4 +25,3 @@ export default (
     const [user, domain] = email.split('@');
     return { email, user, domain };
   });
-};

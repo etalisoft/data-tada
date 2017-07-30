@@ -79,4 +79,10 @@ describe('parser.phone', () => {
       });
     });
   });
+
+  it('should support execution plan then/catch chains before parsing values', () => {
+    const plan = parser().then(phone => ({ ...phone, areaCode: '123', phone: `(123) ${phone.phone}` }));
+    const promise = plan('555-1212').then(({ phone }) => `Phone=${phone}`);
+    expect(promise.value()).toBe('Phone=(123) 555-1212');
+  });
 });

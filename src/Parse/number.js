@@ -1,3 +1,4 @@
+import createExecutionPlan from '../createExecutionPlan';
 import Message from '../Message';
 import SyncPromise from '../SyncPromise';
 
@@ -39,8 +40,8 @@ export default (
     parse = tryParseFloat,
     scrub = scrubFloat,
   } = {}
-) => value =>
-  new model((resolve, reject) => {
+) =>
+  createExecutionPlan(model)(value => (resolve, reject) => {
     const message = new Message(MESSAGES, messages).context(value);
     const rejectWith = err => reject(message.get(err));
 
