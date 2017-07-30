@@ -111,6 +111,15 @@ describe('parser.date', () => {
     });
   });
 
+  it('should resolve with various formats', () => {
+    ['June 5, 2000', '2000-06-05', '06/05/2000'].forEach(value => {
+      const result = parser()(value).value.resolved();
+      expect(result).toExist(value);
+      expect(result.moment.isValid()).toBe(true, value);
+      expect(result.moment.format('MM/DD/YYYY')).toBe('06/05/2000', value);
+    });
+  });
+
   it('should support execution plan then/catch chains before parsing values', () => {
     const plan = parser().then(({ YYYY }) => YYYY).then(v => v * 2);
     const promise = plan('2000-01-01').then(v => `2*Year=${v}`);

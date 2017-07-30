@@ -4,7 +4,7 @@ import createExecutionPlan from '../createExecutionPlan';
 import Message from '../Message';
 import SyncPromise from '../SyncPromise';
 
-const FORMATS = ['L', moment.ISO_8601];
+const FORMATS = ['MMM D, YYYY', 'L', moment.ISO_8601];
 
 const MESSAGES = {
   required: 'Required',
