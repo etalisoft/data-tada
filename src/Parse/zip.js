@@ -26,7 +26,8 @@ const parseZip = value => {
 
 export default ({ model = SyncPromise, required = false, validate, messages, parse = parseZip } = {}) =>
   createExecutionPlan(model)(value => (resolve, reject) => {
-    const message = new Message(MESSAGES, messages).context(value);
+    const context = { value };
+    const message = new Message(MESSAGES, messages).context(context);
     const rejectWith = err => reject(message.get(err));
 
     let result = value && value.toString instanceof Function ? value.toString() : value;

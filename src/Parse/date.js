@@ -80,7 +80,8 @@ export default (
   { model = SyncPromise, required = false, min, max, validate, messages, formats = FORMATS, ...args } = {}
 ) =>
   createExecutionPlan(model)(value => (resolve, reject) => {
-    const message = new Message(MESSAGES, messages).context(value);
+    const context = { value };
+    const message = new Message(MESSAGES, messages).context(context);
     const rejectWith = err => reject(message.get(err));
 
     let result = value;
@@ -95,14 +96,14 @@ export default (
     }
 
     if (min) {
-      const dt = parse(min, formats, ...args);
+      const dt = (context.min = parse(min, formats, ...args));
       if (result.moment.isBefore(dt)) {
         return rejectWith('min');
       }
     }
 
     if (max) {
-      const dt = parse(max, formats, ...args);
+      const dt = (context.max = parse(max, formats, ...args));
       if (result.moment.isAfter(dt)) {
         return rejectWith('max');
       }

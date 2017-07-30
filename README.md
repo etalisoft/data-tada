@@ -12,3 +12,4 @@
 ## Code Sandboxes
 You can play around with `data-tada` in these sandbox versions.
 - [Examples](https://codesandbox.io/s/LLYpx8Qw)
+- [Custom XY Parser](https://codesandbox.io/s/vgM4O7Z8M)

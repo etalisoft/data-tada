@@ -5,7 +5,8 @@
 ### [Parsers](api.parse.md)
 
 #### Creating a New Parser
-As an example, we will create a custom parser for parsing {X,Y} coordinates.
+As an example, we will create a custom parser for parsing {X,Y} coordinates. You can play around with this example on
+[Code Sandbox](https://codesandbox.io/s/vgM4O7Z8M).
 
 ##### Step 1: Start with the configuration object.
 ```js
@@ -14,10 +15,10 @@ import { createExecutionPlan, SyncPromise } from 'data-tada';
 const createXYParser = ({
   model = SyncPromise,
   required = false,
-  minX = NUMBER.NEGATIVE_INFINITY,
-  maxX = NUMBER.MAX_VALUE,
-  minY = NUMBER.NEGATIVE_INFINITY,
-  maxY = NUMBER.MAX_VALUE,
+  minX = Number.NEGATIVE_INFINITY,
+  maxX = Number.MAX_VALUE,
+  minY = Number.NEGATIVE_INFINITY,
+  maxY = Number.MAX_VALUE,
 }) => createExecutionPlan(model)(value => (resolve, reject) => {
   // parsing logic will go here
 });
@@ -45,13 +46,14 @@ const MESSAGES = {
 const createXYParser = ({
   model = SyncPromise,
   required = false,
-  minX = NUMBER.NEGATIVE_INFINITY,
-  maxX = NUMBER.MAX_VALUE,
-  minY = NUMBER.NEGATIVE_INFINITY,
-  maxY = NUMBER.MAX_VALUE,
+  minX = Number.NEGATIVE_INFINITY,
+  maxX = Number.MAX_VALUE,
+  minY = Number.NEGATIVE_INFINITY,
+  maxY = Number.MAX_VALUE,
   messages,
 }) => createExecutionPlan(model)(value => (resolve, reject) => {
-  const message = new Message(MESSAGES, messages).context(value);
+  const context = { value };
+  const message = new Message(MESSAGES, messages).context(context);
   const rejectWith = err => reject(message.get(err));
   // parsing logic will go here
 });
@@ -60,7 +62,7 @@ The Message object merges the default `MESSAGES` with any `messages` that were s
 
 ```js
 const MESSAGES = {
-  minX = (rejectKey, rawValue) => `X Too Low, ${rawValue}`,
+  minX = (rejectKey, context) => `X Too Low, ${context}`,
   ...
 }
 ```
@@ -74,13 +76,14 @@ const MESSAGES = { ... }; // collapsed for brevity
 const createXYParser = ({
   model = SyncPromise,
   required = false,
-  minX = NUMBER.NEGATIVE_INFINITY,
-  maxX = NUMBER.MAX_VALUE,
-  minY = NUMBER.NEGATIVE_INFINITY,
-  maxY = NUMBER.MAX_VALUE,
+  minX = Number.NEGATIVE_INFINITY,
+  maxX = Number.MAX_VALUE,
+  minY = Number.NEGATIVE_INFINITY,
+  maxY = Number.MAX_VALUE,
   messages,
 }) => createExecutionPlan(model)(value => (resolve, reject) => {
-  const message = new Message(MESSAGES, messages).context(value);
+  const context = { value };
+  const message = new Message(MESSAGES, messages).context(context);
   const rejectWith = err => reject(message.get(err));
 
   if(value === null || value === undefined || value === '') {
@@ -91,14 +94,14 @@ const createXYParser = ({
     return rejectWith('invalid');
   }
 
-  const reg = /^\D*(\d+)\D*(\d+)\D*$/;
+  const reg = /^\D*?([-+]?\d+(\.\d*)?)\D+?([-+]?\d+(\.\d*)?)\D*$/;
   const match = value.match(reg);
   if(!match) {
     return rejectWith('invalid');
   }
 
-  const x = parseFloat(match[1]);
-  const y = parseFloat(match[2]);
+  const x = context.x = parseFloat(match[1]);
+  const y = context.y = parseFloat(match[3]);
 
   if(x < minX) rejectWith('minX');
   if(x > maxX) rejectWith('maxX');

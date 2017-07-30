@@ -26,7 +26,8 @@ export default (
   createExecutionPlan(model)(value => (resolve, reject) => {
     let result = value && value.toString instanceof Function ? value.toString() : value;
 
-    const message = new Message(MESSAGES, messages).context(value);
+    const context = { value, minLength, maxLength };
+    const message = new Message(MESSAGES, messages).context(context);
     const rejectWith = err => reject(message.get(err));
 
     if (result === null || result === undefined || result === '') {
