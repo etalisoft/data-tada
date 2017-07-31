@@ -2,8 +2,8 @@ import SyncPromise from '../SyncPromise';
 
 import createStringParser from './string';
 
-// https://www.w3.org/TR/2012/WD-html-markup-20120320/input.email.html
-const w3cEmail = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+// http://emailregex.com/
+const regEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export default (
   {
@@ -11,7 +11,7 @@ export default (
     required = false,
     minLength = 0,
     maxLength = Number.MAX_VALUE,
-    regex = w3cEmail,
+    regex = regEmail,
     notRegex,
     validate,
     messages,

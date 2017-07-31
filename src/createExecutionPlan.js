@@ -8,7 +8,7 @@ export default model => executor => {
 
   function ExecutionPlan(...args) {
     const resolver = executor(...args);
-    return steps.reduce((promise, { fn, args }) => fn(promise)(...args), new model(resolver));
+    return steps.reduce((promise, { fn, args }) => fn(promise).bind(promise)(...args), new model(resolver));
   }
 
   const perform = fn => (...args) => purge => {
