@@ -27,7 +27,17 @@ const createXYParser = ({
 The configuration object specifies the default configuration of the parser.
 The `model` parameter allows the consumer to switch between [SyncPromise](api.sync-promise.md), [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise), or another promise-like object with `.then()` and `.catch()` functionality.
 
-Once the parser is configured it returns an ExecutionPlan.  The execution plan is a function that allows you to prepend `.then(fn)` and `.catch(fn)` handlers _before_ the value is actually parsed.  Passing a value to the ExecutionPlan creates the promise with any then/catch handlers and returns it.
+Once the parser is configured it returns an ExecutionPlan.  The execution plan is a function that allows you to prepend `.then(fn)` and `.catch(fn)` handlers _before_ the value is actually parsed.  If the `model` is a `SyncPromise`, the execution plan will also allow you to utilize a `.value()`, `.value(fn)`, `.value.resolved()`, or `.value.rejected()` handler.  Passing a value to the ExecutionPlan creates the promise with any then/catch handlers and returns it.
+
+```js
+// ExecutionPlan example
+import { Parse } from 'data-tada';
+const plan = Parse.number({ required: true })
+  .then(v => 2 * v) // add then/catch statements _before_ parsing a value.
+  .catch(e => 0);
+plan('123').then(v => v + 1).value(); // 247 (123 was parsed, then doubled, then add 1)
+plan('abc').then(v => v + 1).value(); // 1 (rejected as invalid, caught and returned 0, then doubled, then add 1)
+```
 
 ##### Step 2: Configuring default error messages
 ```js
