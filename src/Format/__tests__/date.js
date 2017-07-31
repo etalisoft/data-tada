@@ -6,8 +6,11 @@ import format from '../date';
 describe('format.date', () => {
   it('should format for named types', () => {
     const m = moment('2003-06-05 7:02 PM', 'YYYY-MM-DD h:mm P');
+    const js = m.toDate();
     const FORMATS = {
       default: '06/05/2003',
+      moment: m,
+      jsDate: js,
       ISO: m.toISOString(),
       localeDateShort: m.format('l'),
       localeDate: m.format('L'),
@@ -23,6 +26,7 @@ describe('format.date', () => {
     };
     const value = {
       moment: m,
+      date: js,
       A: 'PM',
       D: 5,
       DD: '05',
@@ -38,7 +42,7 @@ describe('format.date', () => {
       YYYY: 2003,
     };
     Object.keys(FORMATS).forEach(k => {
-      expect(format[k](value)).toBe(FORMATS[k]);
+      expect(format[k](value)).toBe(FORMATS[k], k);
     });
   });
 });

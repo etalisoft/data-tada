@@ -1,5 +1,7 @@
 export default {
   default: ({ MM, DD, YYYY }) => `${MM}/${DD}/${YYYY}`,
+  moment: ({ moment }) => moment,
+  jsDate: ({ date }) => date,
   ISO: ({ moment }) => moment.toISOString(),
   localeDateShort: ({ l }) => l,
   localeDate: ({ L }) => L,

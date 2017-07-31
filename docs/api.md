@@ -30,6 +30,8 @@ Parses ZIPs.
 
 #### Date
 - `Format.date.default` - 'MM/dd/yyyy'
+- `Format.date.moment` - The moment object
+- `Format.date.jsDate` - The JavaScript Date object
 - `Format.date.ISO` - based on moment.toISOString()
 - `Format.date.localeDateShort` - based on moment.format('l')
 - `Format.date.localeDate` - based on moment.format('L')
