@@ -4,10 +4,10 @@
 
 ### Parsing data
 ```js
-import { parser } from 'data-tada';
+import { Parse } from 'data-tada';
 
 // Step 1: Create an email parser
-const emailParser = parser.email();
+const emailParser = Parse.email();
 
 // Step 2: Pass a value to it
 const promise = emailParser('john@doe.com');
@@ -48,21 +48,15 @@ goodEmail.value.rejected(); // 'Invalid'
 You can use `then` methods to transform/format data.  Format functions are pure functions.  Some default format
 functions have been provided in the `format` object.
 ```js
-import { parser, format } from 'data-tada';
+import { Parse, Format } from 'data-tada';
 
-const emailParser = parser.email();
+const emailParser = Parse.email();
 
-emailParser('john@doe.com').then(format.email.mask).value(result => {
-  result.status; // 'resolved'
-  result.value;  // '****@doe.com'
-});
+emailParser('john@doe.com').then(Format.email.mask).value(); // '****@doe.com'
 
 // Custom format function for reversing a string
 const reverseEmail = ({ email }) => email.split('').reverse().join('');
-emailParser('john@doe.com').then(reverseEmail).value(result => {
-  result.status; // 'resolved'
-  result.value;  // 'moc.eod@nhoj'
-});
+emailParser('john@doe.com').then(reverseEmail).value(); // 'moc.eod@nhoj'
 ```
 
 ### Validating Data
@@ -86,7 +80,7 @@ const passwordParser = parser.string({
 });
 
 const password = document.getElementById('password').value;
-// If we wanted to parse the password and retrieve the error message if invalid, or an empty string if valid
+// If we wanted to parse the password and retrieve the error message if invalid, or undefined if valid
 // we could do the following.
 const passwordError = passwordParser(password).value.rejected();
 ```

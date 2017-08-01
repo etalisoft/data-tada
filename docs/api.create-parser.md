@@ -72,7 +72,7 @@ The Message object merges the default `MESSAGES` with any `messages` that were s
 
 ```js
 const MESSAGES = {
-  minX = (rejectKey, context) => `X Too Low, ${context}`,
+  minX: (rejectKey, context) => `X Too Low, ${context}`,
   ...
 }
 ```
