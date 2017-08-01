@@ -3,7 +3,7 @@ import expect from 'expect';
 import SyncPromise from '../../SyncPromise';
 import parser from '../phone.js';
 
-describe('parser.phone', () => {
+describe('Parse.phone', () => {
   it('should return a SyncPromise', () => {
     const result = parser()();
     expect(result).toBeA(SyncPromise);
@@ -23,7 +23,6 @@ describe('parser.phone', () => {
       '()=>undefined': { toString: () => undefined },
       '()=>empty': { toString: () => '' },
     };
-    const msg = (k, expected, actual) => `${k}: Expected ${JSON.stringify(expected)} to be ${JSON.stringify(actual)}`;
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
@@ -33,7 +32,13 @@ describe('parser.phone', () => {
       });
 
       parser({ required: false })(VALUES[k]).value(({ status, value }) => {
-        expect(value).toBe(expected, msg(k, expected, value));
+        expect(value).toContain({
+          phone: undefined,
+          areaCode: undefined,
+          local3: undefined,
+          last4: undefined,
+          extension: undefined,
+        });
         expect(status).toBe('resolved');
       });
     });

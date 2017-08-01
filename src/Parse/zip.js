@@ -1,3 +1,4 @@
+import format from '../Format/zip';
 import createExecutionPlan from '../createExecutionPlan';
 import Message from '../Message';
 import SyncPromise from '../SyncPromise';
@@ -29,14 +30,14 @@ export default ({ model = SyncPromise, required = false, validate, messages, par
     const context = { value };
     const message = new Message(MESSAGES, messages).context(context);
     const rejectWith = err => reject(message.get(err));
+    const resolveWith = val => resolve(format.new(val));
 
-    let result = value && value.toString instanceof Function ? value.toString() : value;
-    if (result === null || result === undefined || result === '') {
-      return required ? rejectWith('required') : resolve(result);
+    const unwrapped = value && value.toString instanceof Function ? value.toString() : value;
+    if (unwrapped === null || unwrapped === undefined || unwrapped === '') {
+      return required ? rejectWith('required') : resolveWith(unwrapped);
     }
 
-    result = context.result = parse(result);
-
+    const result = (context.result = parse(unwrapped));
     if (!result) {
       return rejectWith('invalid');
     }
@@ -45,5 +46,5 @@ export default ({ model = SyncPromise, required = false, validate, messages, par
       return rejectWith('validate');
     }
 
-    return resolve(result);
+    return resolveWith(result);
   });

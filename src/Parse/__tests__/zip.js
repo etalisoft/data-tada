@@ -3,7 +3,7 @@ import expect from 'expect';
 import SyncPromise from '../../SyncPromise';
 import parser from '../zip.js';
 
-describe('parser.zip', () => {
+describe('Parse.zip', () => {
   it('should return a SyncPromise', () => {
     const result = parser()();
     expect(result).toBeA(SyncPromise);
@@ -23,7 +23,6 @@ describe('parser.zip', () => {
       '()=>undefined': { toString: () => undefined },
       '()=>empty': { toString: () => '' },
     };
-    const msg = (k, expected, actual) => `${k}: Expected ${JSON.stringify(expected)} to be ${JSON.stringify(actual)}`;
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
@@ -33,7 +32,7 @@ describe('parser.zip', () => {
       });
 
       parser({ required: false })(VALUES[k]).value(({ status, value }) => {
-        expect(value).toBe(expected, msg(k, expected, value));
+        expect(value).toContain({ zip: undefined, plus4: undefined, zipPlus4: undefined });
         expect(status).toBe('resolved');
       });
     });

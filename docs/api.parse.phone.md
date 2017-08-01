@@ -2,7 +2,7 @@
 
 ## [API](api.md)
 
-### Parse
+### [Parsers](api.parse.md)
 
 #### `Parse.phone`
 

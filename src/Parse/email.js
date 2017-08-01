@@ -1,5 +1,6 @@
 import SyncPromise from '../SyncPromise';
 
+import format from '../Format/email';
 import createStringParser from './string';
 
 // http://emailregex.com/
@@ -17,11 +18,6 @@ export default (
     messages,
   } = {}
 ) =>
-  createStringParser({ model, required, minLength, maxLength, regex, notRegex, validate, messages }).then(email => {
-    if (!email) {
-      return email;
-    }
-
-    const [user, domain] = email.split('@');
-    return { email, user, domain };
-  });
+  createStringParser({ model, required, minLength, maxLength, regex, notRegex, validate, messages }).then(email =>
+    format.new(email || '')
+  );

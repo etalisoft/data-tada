@@ -2,11 +2,21 @@ import expect from 'expect';
 
 import format from '../zip';
 
-describe('format.zip', () => {
+describe('Format.zip', () => {
+  it('should create new', () => {
+    const valid = { zip: 'a', plus4: 'b', zipPlus4: 'c' };
+    expect(format.new(valid)).toContain(valid);
+
+    expect(format.new(new Date())).toContain({
+      zip: undefined,
+      plus4: undefined,
+      zipPlus4: undefined,
+    });
+  });
+
   it('should format for named types', () => {
-    expect(format.default({ zip: '12345', zipPlus4: '12345' })).toBe('12345');
-    expect(format.default({ zip: '12345', zipPlus4: '12345-6789' })).toBe('12345-6789');
-    expect(format.zip({ zip: '54321', zipPlus4: '54321-6789' })).toBe('54321');
-    expect(format.zipPlus4({ zip: '12345', zipPlus4: '12345-6789' })).toBe('12345-6789');
+    expect(format.zip({ zip: 'a', plus4: 'b', zipPlus4: 'c' })).toBe('a');
+    expect(format.plus4({ zip: 'a', plus4: 'b', zipPlus4: 'c' })).toBe('b');
+    expect(format.zipPlus4({ zip: 'a', plus4: 'b', zipPlus4: 'c' })).toBe('c');
   });
 });

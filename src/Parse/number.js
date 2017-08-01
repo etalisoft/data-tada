@@ -1,3 +1,4 @@
+import format from '../Format/number';
 import createExecutionPlan from '../createExecutionPlan';
 import Message from '../Message';
 import SyncPromise from '../SyncPromise';
@@ -45,16 +46,17 @@ export default (
     const context = { value };
     const message = new Message(MESSAGES, messages).context(context);
     const rejectWith = err => reject(message.get(err));
+    const resolveWith = val => resolve(format.new(val));
 
-    let result = value && value.toString instanceof Function ? value.toString() : value;
-    if (result === null || result === undefined || result === '') {
-      return required ? rejectWith('required') : resolve(result);
+    const unwrapped = value && value.toString instanceof Function ? value.toString() : value;
+
+    if (unwrapped === null || unwrapped === undefined || unwrapped === '') {
+      return required ? rejectWith('required') : resolveWith(unwrapped);
     }
 
-    result = context.result = parse(result);
-
+    let result = (context.result = parse(unwrapped));
     if (isNaN(result)) {
-      result = parse(scrub(result));
+      result = context.result = parse(scrub(result));
     }
 
     if (isNaN(result)) {
@@ -73,5 +75,5 @@ export default (
       return rejectWith('validate');
     }
 
-    return resolve(result);
+    return resolveWith(result);
   });

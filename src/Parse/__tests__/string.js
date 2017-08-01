@@ -3,7 +3,7 @@ import expect from 'expect';
 import SyncPromise from '../../SyncPromise';
 import parser from '../string.js';
 
-describe('parser.string', () => {
+describe('Parse.string', () => {
   it('should return a SyncPromise', () => {
     const result = parser()();
     expect(result).toBeA(SyncPromise);
@@ -33,7 +33,7 @@ describe('parser.string', () => {
       });
 
       parser({ required: false })(VALUES[k]).value(({ status, value }) => {
-        expect(value).toBe(expected, msg(k, expected, value));
+        expect(value).toBe(expected || '', msg(k, expected, value));
         expect(status).toBe('resolved');
       });
     });

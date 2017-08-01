@@ -2,7 +2,7 @@
 
 ## API
 
-### Parsers
+### [Parsers](api.parse.md)
 The following parsers have been provided for you.  For an overview on how the default parsers work, [click here](api.parse.md).
 
 #### [`Parse.date`](api.parse.date.md)
@@ -29,7 +29,7 @@ Parses ZIPs.
 ### Formatters
 
 #### Date
-- `Format.date.default` - 'MM/dd/yyyy'
+- `Format.date.default` - 'MM/DD/YYYY'
 - `Format.date.moment` - The moment object
 - `Format.date.jsDate` - The JavaScript Date object
 - `Format.date.ISO` - based on moment.toISOString()
@@ -37,13 +37,13 @@ Parses ZIPs.
 - `Format.date.localeDate` - based on moment.format('L')
 - `Format.date.localeTimeShort` - based on moment.format('LT')
 - `Format.date.localeTime` - based on moment.format('LTS')
-- `Format.date['h:mm tt']`
-- `Format.date['M/d']`
-- `Format.date['M/d/yyyy']`
-- `Format.date['MM/dd/yyyy']`
-- `Format.date['M/d/yyyy h:mm tt']`
-- `Format.date['MM/dd/yyyy h:mm tt']`
-- `Format.date['MMMM d, yyyy']`
+- `Format.date['h:mm A']`
+- `Format.date['M/D']`
+- `Format.date['M/D/YYYY']`
+- `Format.date['MM/DD/YYYY']`
+- `Format.date['M/D/YYYY h:mm A']`
+- `Format.date['MM/DD/YYYY h:mm A']`
+- `Format.date['MMMM D, YYYY']`
 
 #### Email
 - `Format.email.default` - john@doe.com

@@ -1,3 +1,4 @@
+import format from '../Format/string';
 import createExecutionPlan from '../createExecutionPlan';
 import Message from '../Message';
 import SyncPromise from '../SyncPromise';
@@ -24,15 +25,17 @@ export default (
   } = {}
 ) =>
   createExecutionPlan(model)(value => (resolve, reject) => {
-    let result = value && value.toString instanceof Function ? value.toString() : value;
-
     const context = { value, result };
     const message = new Message(MESSAGES, messages).context(context);
     const rejectWith = err => reject(message.get(err));
+    const resolveWith = val => resolve(format.new(val));
 
-    if (result === null || result === undefined || result === '') {
-      return required ? rejectWith('required') : resolve(result);
+    const unwrapped = value && value.toString instanceof Function ? value.toString() : value;
+    if (unwrapped === null || unwrapped === undefined || unwrapped === '') {
+      return required ? rejectWith('required') : resolveWith(unwrapped);
     }
+
+    const result = `${unwrapped}`;
 
     if (minLength && result.length < minLength) {
       return rejectWith('minLength');
@@ -54,5 +57,5 @@ export default (
       return rejectWith('validate');
     }
 
-    return resolve(result);
+    return resolveWith(result);
   });

@@ -1,11 +1,12 @@
 import expect from 'expect';
+import moment from 'moment';
 
 import SyncPromise from '../../SyncPromise';
 import parser from '../date.js';
 
 const falsy = [null, undefined, false, 0, NaN, ''];
 
-describe('parser.date', () => {
+describe('Parse.date', () => {
   let warn;
 
   before(() => {
@@ -28,11 +29,9 @@ describe('parser.date', () => {
   });
 
   it('should resolve/reject on required', () => {
-    const keys = 'moment,date,D,DD,ddd,dddd,S,SS,SSS,SSSS,h,hh,H,HH,m,mm,M,MM,MMM,MMMM,A,YY,YYYY,Z'.split(',');
-    falsy.forEach(value => {
+    [null, ''].forEach(value => {
       parser({ required: false })(value).value(({ status, value }) => {
-        if (!value) console.log('UH OH', value, value);
-        expect(value).toExist().toIncludeKeys(keys);
+        expect(value).toBeA(moment);
         expect(status).toBe('resolved');
       });
 
@@ -47,7 +46,7 @@ describe('parser.date', () => {
     ['now', 'today', '2000-01-01', new Date(), { year: 2000 }, [2000]].forEach(value => {
       parser({ required: true })(value).value(({ status, value }) => {
         expect(status).toBe('resolved');
-        expect(value.moment.isValid()).toBe(true);
+        expect(value.isValid()).toBe(true);
       });
     });
     ['o.O'].forEach(value => {
@@ -70,7 +69,7 @@ describe('parser.date', () => {
         if (expected === 'Too Early') {
           expect(value).toBe('Too Early');
         } else {
-          expect(value.moment.format('M/D/YYYY')).toBe('1/1/2000');
+          expect(value.format('M/D/YYYY')).toBe('1/1/2000');
         }
       });
     });
@@ -88,7 +87,7 @@ describe('parser.date', () => {
         if (expected === 'Too Late') {
           expect(value).toBe('Too Late');
         } else {
-          expect(value.moment.format('M/D/YYYY')).toBe('1/1/2000');
+          expect(value.format('M/D/YYYY')).toBe('1/1/2000');
         }
       });
     });
@@ -105,7 +104,7 @@ describe('parser.date', () => {
         if (k === 'Invalid') {
           expect(value).toBe('Invalid');
         } else {
-          expect(value.moment.format('M/D/YYYY')).toBe('1/1/2000');
+          expect(value.format('M/D/YYYY')).toBe('1/1/2000');
         }
       });
     });
@@ -115,13 +114,13 @@ describe('parser.date', () => {
     ['June 5, 2000', '2000-06-05', '06/05/2000'].forEach(value => {
       const result = parser()(value).value.resolved();
       expect(result).toExist(value);
-      expect(result.moment.isValid()).toBe(true, value);
-      expect(result.moment.format('MM/DD/YYYY')).toBe('06/05/2000', value);
+      expect(result.isValid()).toBe(true, value);
+      expect(result.format('MM/DD/YYYY')).toBe('06/05/2000', value);
     });
   });
 
   it('should support execution plan then/catch chains before parsing values', () => {
-    const plan = parser().then(({ YYYY }) => YYYY).then(v => v * 2);
+    const plan = parser().then(m => m.year()).then(v => v * 2);
     const promise = plan('2000-01-01').then(v => `2*Year=${v}`);
     expect(promise.value()).toBe('2*Year=4000');
   });
