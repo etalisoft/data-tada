@@ -1,8 +1,8 @@
 export default {
   new: value => create(value),
 
-  zip: ({ zip }) => zip,
   plus4: ({ plus4 }) => plus4,
+  zip: ({ zip }) => zip,
   zipPlus4: ({ zipPlus4 }) => zipPlus4,
 };
 

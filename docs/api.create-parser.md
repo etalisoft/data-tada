@@ -53,6 +53,8 @@ const MESSAGES = {
   validate: 'Invalid',
 };
 
+const create = ({ x, y, quadrant } = {}) => ({ x, y, quadrant });
+
 const createXYParser = ({
   model = SyncPromise,
   required = false,
@@ -65,6 +67,7 @@ const createXYParser = ({
   const context = { value };
   const message = new Message(MESSAGES, messages).context(context);
   const rejectWith = err => reject(message.get(err));
+  const resolveWith = val => resolve(create(val));
   // parsing logic will go here
 });
 ```
@@ -83,6 +86,8 @@ import { createExecutionPlan, Message, SyncPromise } from 'data-tada';
 
 const MESSAGES = { ... }; // collapsed for brevity
 
+const create = ({ x, y, quadrant } = {}) => ({ x, y, quadrant });
+
 const createXYParser = ({
   model = SyncPromise,
   required = false,
@@ -95,9 +100,10 @@ const createXYParser = ({
   const context = { value };
   const message = new Message(MESSAGES, messages).context(context);
   const rejectWith = err => reject(message.get(err));
+  const resolveWith = val => resolve(create(val));
 
   if(value === null || value === undefined || value === '') {
-    return required ? rejectWith('required') : resolve(value);
+    return required ? rejectWith('required') : resolveWith(value);
   }
 
   if(typeof value !== 'string') {
@@ -122,7 +128,7 @@ const createXYParser = ({
   const QUADRANT = { '++': 1, '-+': 2, '--': 3, '+-': 4 };
   const quadrant = QUADRANT[pol(x) + pol(y)];
 
-  resolve({ x, y, quadrant });
+  resolveWith({ x, y, quadrant });
 });
 ```
 

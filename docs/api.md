@@ -29,67 +29,119 @@ Parses ZIPs.
 ### Formatters
 
 #### Date
-- `Format.date.default` - 'MM/DD/YYYY'
-- `Format.date.moment` - The moment object
-- `Format.date.jsDate` - The JavaScript Date object
-- `Format.date.ISO` - based on moment.toISOString()
-- `Format.date.localeDateShort` - based on moment.format('l')
-- `Format.date.localeDate` - based on moment.format('L')
-- `Format.date.localeTimeShort` - based on moment.format('LT')
-- `Format.date.localeTime` - based on moment.format('LTS')
-- `Format.date['h:mm A']`
-- `Format.date['M/D']`
-- `Format.date['M/D/YYYY']`
-- `Format.date['MM/DD/YYYY']`
-- `Format.date['M/D/YYYY h:mm A']`
-- `Format.date['MM/DD/YYYY h:mm A']`
-- `Format.date['MMMM D, YYYY']`
+- `Format.date.new` - Create a moment from a value
+- `Format.date.add(...args)` - moment.add(...)
+- `Format.date.array` - moment.toArray()
+- `Format.date.bound(low,high)` - moment limited by upper/lower bounds
+- `Format.date.calendar(...args)` - moment.calendar(...args)
+- `Format.date.date` - moment.toDate() // JavaScript Date object
+- `Format.date.daysInMonth` - moment.daysInMonth()
+- `Format.date.diff(d)` - moment.diff(d)
+- `Format.date.endOf(s)` - moment.endOf(s)
+- `Format.date.format(f)` - moment.format(f)
+- `Format.date.from(d)` - moment.from(d)
+- `Format.date.fromNow(b)` - moment.fromNow(b)
+- `Format.date.ISO` - moment.toISOString()
+- `Format.date.local` - moment.local()
+- `Format.date.max(d)` - max(d, moment)
+- `Format.date.min(d)` - min(d, moment)
+- `Format.date.moment` - The moment (identity function)
+- `Format.date.now` - New moment object set to now
+- `Format.date.object` - moment.toObject()
+- `Format.date.subtract(...args)` - moment.subtract(...args)
+- `Format.date.startOf(s)` - moment.startOf(s)
+- `Format.date.ticks` - moment.valueOf()
+- `Format.date.to(d)` - moment.to(d)
+- `Format.date.today` - New moment object set to today
+- `Format.date.toNow(b)` - moment.toNow(b)
+- `Format.date.utc` - moment.utc()
+- `Format.date.utcOffset(...args)` - moment.utcOffset(...args)
+- `Format.date.valid` - moment.isValid()
 
 #### Email
-- `Format.email.default` - john@doe.com
+- `Format.email.new` - Create an email from a value
+- `Format.email.email` - john@doe.com
 - `Format.email.mask` - ****@doe.com
 - `Format.email.maskWith('#')` - ####@doe.com
 
 #### Number
-- `Format.number.default` - identity function
-- `Format.number.abs` - Math.abs
-- `Format.number.floor` - Math.floor
-- `Format.number.ceil` - Math.ceil
-- `Format.number.trunc` - Math.trunc
-- `Format.number.round` - Math.round
-- `Format.number.fixed2` - Number.toFixed(2)
-- `Format.number.exponential2` - Number.toExponential(2)
-- `Format.number.exponential(n)` - Number.toExponential(n)
-- `Format.number.usd` - Number.toLocaleString('en-US', ...)
-- `Format.number.locale` - Number.toLocaleString()
-- `Format.number.binary` - Number.toString(2)
-- `Format.number.octal` - Number.toString(8)
-- `Format.number.hex` - Number.toString(16)
-- `Format.number.base(n)` - Number.toString(n)
+- `Format.number.new` - Create a number from a value
+- `Format.number.abs` - Math.abs(n)
+- `Format.number.base(x)` - Math.floor(n).toString(x)
+- `Format.number.binary` - Math.floor(n).toString(2)
+- `Format.number.bound(low,high)` - number limited by upper/lower bounds
+- `Format.number.ceil` - Math.ceil(n)
+- `Format.number.exponential(x)` - n.toExponential(x)
+- `Format.number.fixed(x)` - n.toFixed(x)
+- `Format.number.floor` - Math.floor(n)
+- `Format.number.hex` - Math.floor(n).toString(16)
+- `Format.number.locale(...args)` - n.toLocaleString(...args)
+- `Format.number.max(x)` - Math.max(n,x)
+- `Format.number.min(x)` - Math.min(n,x)
+- `Format.number.nan` - NaN
+- `Format.number.negativeInfinity` - Number.NEGATIVE_INFINITY
+- `Format.number.number` - The number (identity function)
+- `Format.number.octal` - Math.floor(n).toString(8)
+- `Format.number.percent(x)` - #.##% (fixed to x places)
+- `Format.number.positiveInfinity` - Number.POSITIVE_INFINITY
+- `Format.number.round` - Math.round(n)
+- `Format.number.trunc` - Math.trunc(n)
+- `Format.number.usd` - $12,345.67
+- `Format.number.zero` - 0
 
 #### Phone
-- `Format.phone.default` - area code and extension included with phone number
+- `Format.phone.new` - Create a phone from a value
+- `Format.phone.phone` - area code and extension included with phone number
 - `Format.phone.localOnly` - only local phone number
 
 #### SSN
-- `Format.ssn.default` - 123-45-6789
+- `Format.ssn.new` - Create an SSN from a value
+- `Format.ssn.ssn` - 123-45-6789
 - `Format.ssn.last4` - 6789
 - `Format.ssn.mask` - ***-**-6789
 - `Format.ssn.maskWith('#')` - ###-##-6789
 
 #### String
-- `Format.string.default` - identity function
-- `Format.string.lower` - String.toLowerCase
-- `Format.string.upper` - String.toUpperCase
-- `Format.string.trim` - String.trim
-- `Format.string.title` - "simple" title case
-- `Format.string.toBase64` - converts a string to base64
-- `Format.string.fromBase64` - converts base64 to a string
+- `Format.string.new` - Create a string from a value
+- `Format.string.charAt(n)` - s.charAt(n)
+- `Format.string.charCodeAt(n)` - s.charCodeAt(n)
+- `Format.string.concat(...more)` - s.concat(...more)
+- `Format.string.empty` - ''
+- `Format.string.endsWith(v)` - s.endsWith(v)
+- `Format.string.fromBase64` - window.atob(s)
+- `Format.string.fromCharCode` - String.fromCharCode(v)
+- `Format.string.includes(...args)` - s.includes(...args)
+- `Format.string.indexOf(...args)` - s.indexOf(...args)
+- `Format.string.lastIndexOf(...args)` - s.lastIndexOf(...args)
+- `Format.string.left(n)` - Leftmost n characters of s
+- `Format.string.length` - s.length
+- `Format.string.localeCompare(...args)` - s.localeCompare(...args)
+- `Format.string.localeLower(...args)` - s.toLocaleLowerCase(...args)
+- `Format.string.localeUpper(...args)` - s.toLocaleUpperCase(...args)
+- `Format.string.lower` - s.toLowerCase()
+- `Format.string.match` - s.toUpperCase()
+- `Format.string.normalize(form)` - s.normalize(form)
+- `Format.string.padEnd(...args)` - s.padEnd(...args)
+- `Format.string.padStart(...args)` - s.padStart(...args)
+- `Format.string.repeat(n)` - s.repeat(n)
+- `Format.string.replace(pattern,replacement)` - s.replace(pattern, replacement)
+- `Format.string.right(n)` - Rightmost n characters of s
+- `Format.string.search(regex)` - s.search(regex)
+- `Format.string.slice(...args)` - s.slice(...args)
+- `Format.string.split(...args)` - s.split(...args)
+- `Format.string.startsWith(...args)` - s.startsWith(...args)
+- `Format.string.string` - The string (identity function)
+- `Format.string.substr(...args)` - s.substr(...args)
+- `Format.string.title` - "Simple" title case
+- `Format.string.toBase64` - window.btoa(s)
+- `Format.string.trim` - s.trim()
+- `Format.string.upper` - s.toUpperCase()
 
 #### Zip
-- `Format.zip.default` - #####-####
-- `Format.zip.zip` - #####
-- `Format.zip.zipPlus4` - #####-####
+- `Format.zip.new` - Create a zip from a value
+- `Format.zip.plus4` - 1234
+- `Format.zip.zip` - 12345
+- `Format.zip.zipPlus4` - 12345-1234
 
 ### SyncPromise
 SyncPromise is modeled after a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
