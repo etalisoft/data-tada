@@ -11,22 +11,25 @@ Parses emails.
 ##### Configuration
 ```js
 // Default configuration:
+// Accessible via: Parse.email.defaults
 {
   model: SyncPromise,
   required: false,
   minLength: 0,
   maxLength: Number.MAX_VALUE,
-  regex: <W3C Email Regex>,
+  regex, // Email regex
   notRegex: undefined,
   validate: undefined,
   messages: {
     required: 'Required',
+    invalid: 'Invalid',
     minLength: 'Too Short',
     maxLength: 'Too Long',
     regex: 'Invalid',
     notRegex: 'Invalid',
     validate: 'Invalid',
   },
+  parse, // Function signature: value => String|undefined
 }
 ```
 
@@ -38,6 +41,7 @@ Parses emails.
 - `notRegex` - Rejectable.  If the email matches the notRegex the promise will reject with the corresponding 'notRegex' message.
 - `validate` - Rejectable.  If the validate function is specified and results in false, the promise will reject with the corresponding 'validate' message.  Function signature: `(date)=>Boolean`.
 - `messages` - The messages that will be returned for each of the rejections.
+- `parse` - A function that tries to parse an email address.
 
 ##### Messages
 You can override any or all of the default messages.  The message can be a string or a function.

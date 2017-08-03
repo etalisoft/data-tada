@@ -11,6 +11,7 @@ Parses ZIPs.
 ##### Configuration
 ```js
 // Default configuration
+// Accessible via: Parse.zip.defaults
 {
   model: SyncPromise,
   required: false,
@@ -20,15 +21,15 @@ Parses ZIPs.
     invalid: 'Invalid',
     validate: 'Invalid',
   },
-  parse: parseZip,
+  parse, // Function signature: value => Object|undefined
 }
 ```
 
 - `model` - The promise model to use.  [SyncPromise](api.sync-promise.md) by default.  To use native asynchronous promises, specify: `Parse.zip({ model: Promise })`
 - `required` - Rejectable.  If required=true and the input is falsy the promise will reject with the corresponding 'required' message.
 - `validate` - Rejectable.  If the validate function is specified and results in false, the promise will reject with the corresponding 'validate' message.  Function signature: `(date)=>Boolean`.
-- `parse` - A function that tries to parse US phone numbers.
 - `messages` - The messages that will be returned for each of the rejections.
+- `parse` - A function that tries to parse a ZIP.
 
 ##### Messages
 You can override any or all of the default messages.  The message can be a string or a function.

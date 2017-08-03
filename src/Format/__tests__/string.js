@@ -47,22 +47,29 @@ describe('Format.string', () => {
     expect(format.toBase64('data-tada')).toBe('ZGF0YS10YWRh');
   });
 
-  it('should format title', () => {
-    const title = format.title();
-    expect(title(' the night of ')).toBe(' The Night Of ');
-    expect(title('BEFORE THE NIGHT OF CHRISTMAS')).toBe('Before the Night of Christmas');
-    expect(title('my iphone iv was from the usa')).toBe('My iPhone IV Was From the USA');
-    expect(title("a bOoK BY mcdOnald-o'reilly")).toBe("A Book by McDonald-O'Reilly");
-    expect(title('AT&T merged with t-bone')).toBe('At&T Merged With T-Bone');
-    expect(title(" the valueplus mcdonald-o'reilly of ")).toBe(" The Valueplus McDonald-O'Reilly Of ");
-    const custom = format.title({
-      capitalizeFirstWord: false,
-      capitalizeLastWord: false,
-      replacements: {
-        valueplus: 'ValuePLUS',
-      },
-      particles: null,
+  describe('.title', () => {
+    it('should expose defaults', () => {
+      const keys = 'word,capitalizeFirstWord,capitalizeLastWord,shortWords,replacements,particles'.split(',');
+      expect(format.title.defaults).toExist().toIncludeKeys(keys);
     });
-    expect(custom(" the valueplus mcdonald-o'reilly of ")).toBe(" the ValuePLUS Mcdonald-O'reilly of ");
+
+    it('should format', () => {
+      const title = format.title();
+      expect(title(' the night of ')).toBe(' The Night Of ');
+      expect(title('BEFORE THE NIGHT OF CHRISTMAS')).toBe('Before the Night of Christmas');
+      expect(title('my iphone iv was from the usa')).toBe('My iPhone IV Was From the USA');
+      expect(title("a bOoK BY mcdOnald-o'reilly")).toBe("A Book by McDonald-O'Reilly");
+      expect(title('AT&T merged with t-bone')).toBe('At&T Merged With T-Bone');
+      expect(title(" the valueplus mcdonald-o'reilly of ")).toBe(" The Valueplus McDonald-O'Reilly Of ");
+      const custom = format.title({
+        capitalizeFirstWord: false,
+        capitalizeLastWord: false,
+        replacements: {
+          valueplus: 'ValuePLUS',
+        },
+        particles: null,
+      });
+      expect(custom(" the valueplus mcdonald-o'reilly of ")).toBe(" the ValuePLUS Mcdonald-O'reilly of ");
+    });
   });
 });

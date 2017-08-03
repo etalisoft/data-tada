@@ -1,9 +1,14 @@
 import expect from 'expect';
 
 import SyncPromise from '../../SyncPromise';
-import parser from '../string.js';
+import parser from '../string';
 
 describe('Parse.string', () => {
+  it('should expose defaults', () => {
+    const keys = 'model,required,minLength,maxLength,regex,notRegex,validate,messages'.split(',');
+    expect(parser.defaults).toExist().toIncludeKeys(keys);
+  });
+
   it('should return a SyncPromise', () => {
     const result = parser()();
     expect(result).toBeA(SyncPromise);
@@ -36,6 +41,13 @@ describe('Parse.string', () => {
         expect(value).toBe(expected || '', msg(k, expected, value));
         expect(status).toBe('resolved');
       });
+    });
+  });
+
+  it('should resolve/reject on invalid', () => {
+    parser({ parse: () => undefined })('abc').value(({ status, value }) => {
+      expect(value).toBe('Invalid');
+      expect(status).toBe('rejected');
     });
   });
 

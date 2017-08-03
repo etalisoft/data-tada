@@ -2,9 +2,7 @@ import expect from 'expect';
 import moment from 'moment';
 
 import SyncPromise from '../../SyncPromise';
-import parser from '../date.js';
-
-const falsy = [null, undefined, false, 0, NaN, ''];
+import parser from '../date';
 
 describe('Parse.date', () => {
   let warn;
@@ -16,6 +14,11 @@ describe('Parse.date', () => {
 
   after(() => {
     console.warn = warn;
+  });
+
+  it('should expose defaults', () => {
+    const keys = 'model,required,min,max,validate,messages,parse,formats'.split(',');
+    expect(parser.defaults).toExist().toIncludeKeys(keys);
   });
 
   it('should return a SyncPromise', () => {

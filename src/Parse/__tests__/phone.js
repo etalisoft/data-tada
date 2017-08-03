@@ -1,9 +1,14 @@
 import expect from 'expect';
 
 import SyncPromise from '../../SyncPromise';
-import parser from '../phone.js';
+import parser from '../phone';
 
 describe('Parse.phone', () => {
+  it('should expose defaults', () => {
+    const keys = 'model,required,validate,messages,parse'.split(',');
+    expect(parser.defaults).toExist().toIncludeKeys(keys);
+  });
+
   it('should return a SyncPromise', () => {
     const result = parser()();
     expect(result).toBeA(SyncPromise);
@@ -24,8 +29,6 @@ describe('Parse.phone', () => {
       '()=>empty': { toString: () => '' },
     };
     Object.keys(VALUES).forEach(k => {
-      const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
-
       parser({ required: true })(VALUES[k]).value(({ status, value }) => {
         expect(value).toBe('Required');
         expect(status).toBe('rejected');

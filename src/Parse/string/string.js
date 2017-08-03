@@ -1,32 +1,24 @@
-import format from '../Format/string';
-import createExecutionPlan from '../createExecutionPlan';
-import Message from '../Message';
-import SyncPromise from '../SyncPromise';
+import format from '../../Format/string';
+import createExecutionPlan from '../../createExecutionPlan';
+import Message from '../../Message';
+import defaults from './defaults';
 
-const MESSAGES = {
-  required: 'Required',
-  minLength: 'Too Short',
-  maxLength: 'Too Long',
-  regex: 'Invalid',
-  notRegex: 'Invalid',
-  validate: 'Invalid',
-};
-
-export default (
+const string = (
   {
-    model = SyncPromise,
-    required = false,
-    minLength = 0,
-    maxLength = Number.MAX_VALUE,
-    regex,
-    notRegex,
-    validate,
-    messages,
+    model = defaults.model,
+    required = defaults.required,
+    minLength = defaults.minLength,
+    maxLength = defaults.maxLength,
+    regex = defaults.regex,
+    notRegex = defaults.notRegex,
+    validate = defaults.validate,
+    messages = defaults.messages,
+    parse = defaults.parse,
   } = {}
 ) =>
   createExecutionPlan(model)(value => (resolve, reject) => {
     const context = { value };
-    const message = new Message(MESSAGES, messages).context(context);
+    const message = new Message(defaults.messages, messages).context(context);
     const rejectWith = err => reject(message.get(err));
     const resolveWith = val => resolve(format.new(val));
 
@@ -35,7 +27,10 @@ export default (
       return required ? rejectWith('required') : resolveWith(unwrapped);
     }
 
-    const result = context.result = `${unwrapped}`;
+    const result = context.result = parse(unwrapped);
+    if(result === undefined) {
+      return rejectWith('invalid');
+    }
 
     if (minLength && result.length < minLength) {
       return rejectWith('minLength');
@@ -59,3 +54,7 @@ export default (
 
     return resolveWith(result);
   });
+
+string.defaults = defaults;
+
+export default string;

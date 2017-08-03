@@ -11,6 +11,7 @@ Parses SSNs.
 ##### Configuration
 ```js
 // Default configuration:
+// Accessible via: Parse.ssn.defaults
 {
   model: SyncPromise,
   required: false,
@@ -20,7 +21,7 @@ Parses SSNs.
     invalid: 'Invalid',
     validate: 'Invalid',
   },
-  parse: parseSsn,
+  parse, // Function signature: value => Object|undefined
 }
 ```
 

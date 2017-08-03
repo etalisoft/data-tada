@@ -11,6 +11,7 @@ Parses numbers.
 ##### Configuration
 ```js
 // Default configuration:
+// Accessible via: Parse.number.defaults
 {
   model = SyncPromise,
   required = false,
@@ -24,8 +25,7 @@ Parses numbers.
     max = 'Too High',
     validate = 'Invalid',
   }
-  parse = tryParseFloat,
-  scrub = scrubFloat,
+  parse, // Function signature: value => Float|NaN
 }
 ```
 
@@ -35,8 +35,7 @@ Parses numbers.
 - `max` - Rejectable.  If the number > max the promise will reject with the corresponding 'max' message.
 - `validate` - Rejectable.  If the validate function is specified and results in false, the promise will reject with the corresponding 'validate' message.  Function signature: `(date)=>Boolean`.
 - `messages` - The messages that will be returned for each of the rejections.
-- `parse` - A function that returns the parsed number, or the original value if parsing fails.
-- `scrub` - A function that removes non-numeric characters from the string before attempting to reparse.
+- `parse` - A function that tries to parse a number.
 
 ##### Messages
 You can override any or all of the default messages.  The message can be a string or a function.

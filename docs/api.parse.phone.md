@@ -11,6 +11,7 @@ Parses phones.
 ##### Configuration
 ```js
 // Default configuration
+// Accessible via: Parse.phone.defaults
 {
   model: SyncPromise,
   required: false,
@@ -20,7 +21,7 @@ Parses phones.
     invalid: 'Invalid',
     validate: 'Invalid',
   },
-  parse: parsePhone,
+  parse, // Function signature: value => Object|undefined
 }
 ```
 

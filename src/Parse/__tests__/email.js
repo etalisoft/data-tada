@@ -1,9 +1,14 @@
 import expect from 'expect';
 
 import SyncPromise from '../../SyncPromise';
-import parser from '../email.js';
+import parser from '../email';
 
 describe('Parse.email', () => {
+  it('should expose defaults', () => {
+    const keys = 'model,required,minLength,maxLength,regex,notRegex,validate,messages'.split(',');
+    expect(parser.defaults).toExist().toIncludeKeys(keys);
+  });
+
   it('should return a SyncPromise', () => {
     const result = parser()();
     expect(result).toBeA(SyncPromise);

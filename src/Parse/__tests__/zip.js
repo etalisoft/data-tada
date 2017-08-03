@@ -1,9 +1,14 @@
 import expect from 'expect';
 
 import SyncPromise from '../../SyncPromise';
-import parser from '../zip.js';
+import parser from '../zip';
 
 describe('Parse.zip', () => {
+  it('should expose defaults', () => {
+    const keys = 'model,required,validate,messages,parse'.split(',');
+    expect(parser.defaults).toExist().toIncludeKeys(keys);
+  });
+
   it('should return a SyncPromise', () => {
     const result = parser()();
     expect(result).toBeA(SyncPromise);

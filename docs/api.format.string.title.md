@@ -11,6 +11,7 @@ Title casing is complicated.  This is a "simple" implementation that may require
 
 ```js
 // Default configuration:
+// Accessible via: Format.string.title.defaults
 Format.string.title({
   word: /[a-z]([^\s-&]*)/gi,
   capitalizeFirstWord: true,
@@ -35,6 +36,7 @@ Format.string.title({
   },
 });
 ```
+
 
 - `word` - The [RegExp](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp) to locate the individual words.
 - `capitalizeFirstWord` - Whether to always capitalize the first word.

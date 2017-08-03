@@ -11,6 +11,7 @@ Parses dates using the [Moment.js library](https://momentjs.com/).
 ##### Configuration
 ```js
 // Default configuration:
+// Accessible via: Parse.date.defaults
 {
   model: SyncPromise,
   required: false,
@@ -24,6 +25,7 @@ Parses dates using the [Moment.js library](https://momentjs.com/).
     max: 'Too Late',
     validate: 'Invalid',
   },
+  parse, // Function signature: (value, ...args) => moment,
   formats: ['MMM D, YYYY', 'L', moment.ISO_8601],
   ...args,
 }
@@ -35,6 +37,7 @@ Parses dates using the [Moment.js library](https://momentjs.com/).
 - `max` - Rejectable.  If max is specified and input > max the promise will reject with the corresponding 'max' message.  The value can be: 'now', 'today', a value supported by moment.  The value can also be a function that returns one of the acceptable values.
 - `validate` - Rejectable.  If the validate function is specified and results in false, the promise will reject with the corresponding 'validate' message.  Function signature: `(date)=>Boolean`.
 - `messages` - The messages that will be returned for each of the rejections.
+- `parse` - A function that parses a value into a moment.
 - `formats` - The [moment string+formats](https://momentjs.com/docs/#/parsing/string-formats/) used for parsing strings.
 - `...args` - Any additional args to pass to the [moment parser](https://momentjs.com/docs/#/parsing/).
 
