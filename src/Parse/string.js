@@ -25,7 +25,7 @@ export default (
   } = {}
 ) =>
   createExecutionPlan(model)(value => (resolve, reject) => {
-    const context = { value, result };
+    const context = { value };
     const message = new Message(MESSAGES, messages).context(context);
     const rejectWith = err => reject(message.get(err));
     const resolveWith = val => resolve(format.new(val));
@@ -35,7 +35,7 @@ export default (
       return required ? rejectWith('required') : resolveWith(unwrapped);
     }
 
-    const result = `${unwrapped}`;
+    const result = context.result = `${unwrapped}`;
 
     if (minLength && result.length < minLength) {
       return rejectWith('minLength');

@@ -21,7 +21,6 @@ describe('Format.string', () => {
     expect(format.localeLower()(value)).toBe(value.toLocaleLowerCase());
     expect(format.localeUpper()(value)).toBe(value.toLocaleUpperCase());
     expect(format.trim(value)).toBe(value.trim());
-    expect(format.title(value)).toBe("The Thing and the Thing, O'Reilly Smith-Wilson");
     expect(format.charAt(4)(value)).toBe(value.charAt(4));
     expect(format.charCodeAt(4)(value)).toBe(value.charCodeAt(4));
     expect(format.concat('b', 'c', 'd')('a')).toBe('abcd');
@@ -32,8 +31,8 @@ describe('Format.string', () => {
     expect(format.localeCompare('bob')(value)).toBe(value.localeCompare('bob'));
     expect(format.match(/\s/g)(value).toString()).toBe(value.match(/\s/g).toString());
     expect(format.normalize()(value)).toBe(value.normalize());
-    expect(format.padEnd(5, '*')(value)).toBe(value.padEnd(5, '*'));
-    expect(format.padStart(5, '*')(value)).toBe(value.padStart(5, '*'));
+    expect(format.padEnd(5, '*')(value)).toBe(value + '*****');
+    expect(format.padStart(5, '*')(value)).toBe('*****' + value);
     expect(format.repeat(2)(value)).toBe(value.repeat(2));
     expect(format.replace(/Hin/g, 'hin')(value)).toBe(value.replace(/Hin/g, 'hin'));
     expect(format.search(/Hin/)(value)).toBe(value.search(/Hin/));
@@ -46,5 +45,24 @@ describe('Format.string', () => {
     expect(format.fromBase64('ZGF0YS10YWRh')).toBe('data-tada');
     expect(format.fromCharCode(65, 66, 67)).toBe('ABC');
     expect(format.toBase64('data-tada')).toBe('ZGF0YS10YWRh');
+  });
+
+  it('should format title', () => {
+    const title = format.title();
+    expect(title(' the night of ')).toBe(' The Night Of ');
+    expect(title('BEFORE THE NIGHT OF CHRISTMAS')).toBe('Before the Night of Christmas');
+    expect(title('my iphone iv was from the usa')).toBe('My iPhone IV Was From the USA');
+    expect(title("a bOoK BY mcdOnald-o'reilly")).toBe("A Book by McDonald-O'Reilly");
+    expect(title('AT&T merged with t-bone')).toBe('At&T Merged With T-Bone');
+    expect(title(" the valueplus mcdonald-o'reilly of ")).toBe(" The Valueplus McDonald-O'Reilly Of ");
+    const custom = format.title({
+      capitalizeFirstWord: false,
+      capitalizeLastWord: false,
+      replacements: {
+        valueplus: 'ValuePLUS',
+      },
+      particles: null,
+    });
+    expect(custom(" the valueplus mcdonald-o'reilly of ")).toBe(" the ValuePLUS Mcdonald-O'reilly of ");
   });
 });

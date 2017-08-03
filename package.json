@@ -1,6 +1,6 @@
 {
   "name": "data-tada",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Helper functions for parsing, validating, and formatting data",
   "main": "./lib/index.js",
   "repository": {

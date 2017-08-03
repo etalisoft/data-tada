@@ -1,4 +1,4 @@
-import moment from 'moment';
+import moment from "moment";
 
 export default {
   new: value => create(value),
@@ -25,7 +25,7 @@ export default {
   startOf: s => m => m.startOf(s),
   ticks: m => m.valueOf(),
   to: d => m => m.to(d),
-  today: () => create(moment().startOf('day')),
+  today: () => create(moment().startOf("day")),
   toNow: b => m => m.toNow(b),
   utc: m => m.utc(),
   utcOffset: (...args) => m => m.utcOffset(...args),

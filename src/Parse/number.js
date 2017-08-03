@@ -19,7 +19,7 @@ const tryParseFloat = value => {
 const scrubFloat = value => {
   if (typeof value === 'string') {
     // Purge non-numeric characters from the start of the string
-    const trim = value.replace(/^[^\d+-\.]*/, '');
+    const trim = value.replace(/^[^\d+-.]*/, '');
     // Keep only digit characters
     const match = trim.match(/^[+-]?\D?\s?[\d,]*(\.\d*)?([eE][+-]\d+)?/);
     if (match && match[0].match(/\d/)) {

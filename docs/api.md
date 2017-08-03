@@ -61,7 +61,7 @@ Parses ZIPs.
 #### Email
 - `Format.email.new` - Create an email from a value
 - `Format.email.email` - john@doe.com
-- `Format.email.mask` - ****@doe.com
+- `Format.email.mask` - \*\*\*\*@doe.com
 - `Format.email.maskWith('#')` - ####@doe.com
 
 #### Number
@@ -98,7 +98,7 @@ Parses ZIPs.
 - `Format.ssn.new` - Create an SSN from a value
 - `Format.ssn.ssn` - 123-45-6789
 - `Format.ssn.last4` - 6789
-- `Format.ssn.mask` - ***-**-6789
+- `Format.ssn.mask` - \*\*\*-\*\*-6789
 - `Format.ssn.maskWith('#')` - ###-##-6789
 
 #### String
@@ -121,8 +121,8 @@ Parses ZIPs.
 - `Format.string.lower` - s.toLowerCase()
 - `Format.string.match` - s.toUpperCase()
 - `Format.string.normalize(form)` - s.normalize(form)
-- `Format.string.padEnd(...args)` - s.padEnd(...args)
-- `Format.string.padStart(...args)` - s.padStart(...args)
+- `Format.string.padEnd(n, p)` - s.padEnd(n, p)
+- `Format.string.padStart(n, p)` - s.padStart(l, p)
 - `Format.string.repeat(n)` - s.repeat(n)
 - `Format.string.replace(pattern,replacement)` - s.replace(pattern, replacement)
 - `Format.string.right(n)` - Rightmost n characters of s
@@ -132,7 +132,7 @@ Parses ZIPs.
 - `Format.string.startsWith(...args)` - s.startsWith(...args)
 - `Format.string.string` - The string (identity function)
 - `Format.string.substr(...args)` - s.substr(...args)
-- `Format.string.title` - "Simple" title case
+- [`Format.string.title`](api.format.string.title.md) - "Simple" title case
 - `Format.string.toBase64` - window.btoa(s)
 - `Format.string.trim` - s.trim()
 - `Format.string.upper` - s.toUpperCase()
