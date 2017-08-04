@@ -6,6 +6,7 @@ import defaults from './defaults';
 const string = (
   {
     model = defaults.model,
+    trim = defaults.trim,
     required = defaults.required,
     minLength = defaults.minLength,
     maxLength = defaults.maxLength,
@@ -22,12 +23,14 @@ const string = (
     const rejectWith = err => reject(message.get(err));
     const resolveWith = val => resolve(format.new(val));
 
-    const unwrapped = value && value.toString instanceof Function ? value.toString() : value;
+    const trimmed = v => (trim && typeof v === 'string' ? v.trim() : v);
+
+    const unwrapped = trimmed(value && value.toString instanceof Function ? value.toString() : value);
     if (unwrapped === null || unwrapped === undefined || unwrapped === '') {
       return required ? rejectWith('required') : resolveWith(unwrapped);
     }
 
-    const result = context.result = parse(unwrapped);
+    const result = context.result = trimmed(parse(unwrapped));
     if(result === undefined) {
       return rejectWith('invalid');
     }

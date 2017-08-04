@@ -14,6 +14,7 @@ Parses emails.
 // Accessible via: Parse.email.defaults
 {
   model: SyncPromise,
+  trim: true,
   required: false,
   minLength: 0,
   maxLength: Number.MAX_VALUE,
@@ -34,6 +35,7 @@ Parses emails.
 ```
 
 - `model` - The promise model to use.  [SyncPromise](api.sync-promise.md) by default.  To use native asynchronous promises, specify: `Parse.email({ model: Promise })`
+- `trim` - Whether to trim the value.  Trimming occurs before rejections.
 - `required` - Rejectable.  If required=true and the input is falsy the promise will reject with the corresponding 'required' message.
 - `minLength` - Rejectable.  If the email < minLength characters the promise will reject with the corresponding 'minLength' message.
 - `maxLength` - Rejectable.  If the email > maxLength characters the promise will reject with the corresponding 'maxLength' message.

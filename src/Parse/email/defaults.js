@@ -6,6 +6,7 @@ const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[
 
 export default {
   model: SyncPromise,
+  trim: true,
   required: false,
   minLength: 0,
   maxLength: Number.MAX_VALUE,

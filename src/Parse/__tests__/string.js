@@ -28,26 +28,45 @@ describe('Parse.string', () => {
       '()=>undefined': { toString: () => undefined },
       '()=>empty': { toString: () => '' },
     };
-    const msg = (k, expected, actual) => `${k}: Expected ${JSON.stringify(expected)} to be ${JSON.stringify(actual)}`;
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k] ? VALUES[k].toString() : VALUES[k];
 
-      parser({ required: true })(VALUES[k]).value(({ status, value }) => {
-        expect(value).toBe('Required');
-        expect(status).toBe('rejected');
+      parser({ required: true })(VALUES[k]).value(state => {
+        expect(state).toContain({
+          status: 'rejected',
+          value: 'Required',
+        });
       });
 
-      parser({ required: false })(VALUES[k]).value(({ status, value }) => {
-        expect(value).toBe(expected || '', msg(k, expected, value));
-        expect(status).toBe('resolved');
+      parser({ required: false })(VALUES[k]).value(state => {
+        expect(state).toContain({
+          status: 'resolved',
+          value: expected || '',
+        });
+      });
+    });
+
+    parser({ required: true, trim: true })(' ').value(state => {
+      expect(state).toContain({
+        status: 'rejected',
+        value: 'Required',
+      });
+    })
+
+    parser({ required: false, trim: true })(' ').value(state => {
+      expect(state).toContain({
+        status: 'resolved',
+        value: '',
       });
     });
   });
 
   it('should resolve/reject on invalid', () => {
-    parser({ parse: () => undefined })('abc').value(({ status, value }) => {
-      expect(value).toBe('Invalid');
-      expect(status).toBe('rejected');
+    parser({ parse: () => undefined })('abc').value(state => {
+      expect(state).toContain({
+        status: 'rejected',
+        value: 'Invalid',
+      });
     });
   });
 
@@ -58,9 +77,25 @@ describe('Parse.string', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      parser({ minLength: 4 })(k).value(({ status, value }) => {
-        expect(value).toBe(expected);
-        expect(status).toBe(expected === 'Too Short' ? 'rejected' : 'resolved');
+      parser({ minLength: 4 })(k).value(state => {
+        expect(state).toContain({
+          status: expected === 'Too Short' ? 'rejected' : 'resolved',
+          value: expected,
+        });
+      });
+    });
+
+    parser({ trim: true, minLength: 4 })(' abc').value(state => {
+      expect(state).toContain({
+        status: 'rejected',
+        value: 'Too Short',
+      });
+    });
+
+    parser({ trim: false, minLength: 4 })(' abc').value(state => {
+      expect(state).toContain({
+        status: 'resolved',
+        value: ' abc',
       });
     });
   });
@@ -72,9 +107,25 @@ describe('Parse.string', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      parser({ maxLength: 3 })(k).value(({ status, value }) => {
-        expect(value).toBe(expected);
-        expect(status).toBe(expected === 'Too Long' ? 'rejected' : 'resolved');
+      parser({ maxLength: 3 })(k).value(state => {
+        expect(state).toContain({
+          status: expected === 'Too Long' ? 'rejected' : 'resolved',
+          value: expected,
+        });
+      });
+    });
+
+    parser({ trim: true, maxLength: 3 })(' abc').value(state => {
+      expect(state).toContain({
+        status: 'resolved',
+        value: 'abc',
+      });
+    });
+
+    parser({ trim: false, maxLength: 3 })(' abc').value(state => {
+      expect(state).toContain({
+        status: 'rejected',
+        value: 'Too Long',
       });
     });
   });
@@ -86,9 +137,25 @@ describe('Parse.string', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      parser({ regex: /^valid$/ })(k).value(({ status, value }) => {
-        expect(value).toBe(expected);
-        expect(status).toBe(expected === 'Invalid' ? 'rejected' : 'resolved');
+      parser({ regex: /^valid$/ })(k).value(state => {
+        expect(state).toContain({
+          status: expected === 'Invalid' ? 'rejected' : 'resolved',
+          value: expected,
+        });
+      });
+    });
+
+    parser({ trim: true, regex: /^valid$/ })(' valid').value(state => {
+      expect(state).toContain({
+        status: 'resolved',
+        value: 'valid',
+      });
+    });
+
+    parser({ trim: false, regex: /^valid$/ })(' valid').value(state => {
+      expect(state).toContain({
+        status: 'rejected',
+        value: 'Invalid',
       });
     });
   });
@@ -100,9 +167,25 @@ describe('Parse.string', () => {
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      parser({ notRegex: /^invalid$/ })(k).value(({ status, value }) => {
-        expect(value).toBe(expected);
-        expect(status).toBe(expected === 'Invalid' ? 'rejected' : 'resolved');
+      parser({ notRegex: /^invalid$/ })(k).value(state => {
+        expect(state).toContain({
+          status: expected === 'Invalid' ? 'rejected' : 'resolved',
+          value: expected,
+        })
+      });
+    });
+
+    parser({ trim: true, notRegex: /^invalid$/ })(' invalid').value(state => {
+      expect(state).toContain({
+        status: 'rejected',
+        value: 'Invalid',
+      });
+    });
+
+    parser({ trim: false, notRegex: /^invalid$/ })(' invalid').value(state => {
+      expect(state).toContain({
+        status: 'resolved',
+        value: ' invalid',
       });
     });
   });
@@ -115,9 +198,26 @@ describe('Parse.string', () => {
     const onlyLowerCase = v => v === v.toLowerCase();
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      parser({ validate: onlyLowerCase })(k).value(({ status, value }) => {
-        expect(value).toBe(expected);
-        expect(status).toBe(expected === 'Invalid' ? 'rejected' : 'resolved');
+      parser({ validate: onlyLowerCase })(k).value(state => {
+        expect(state).toContain({
+          status: expected === 'Invalid' ? 'rejected' : 'resolved',
+          value: expected,
+        });
+      });
+    });
+
+    const noSpaces = v => !v.includes(' ');
+    parser({ trim: true, validate: noSpaces })(' ').value(state => {
+      expect(state).toContain({
+        status: 'resolved',
+        value: '',
+      });
+    });
+
+    parser({ trim: false, validate: noSpaces })(' ').value(state => {
+      expect(state).toContain({
+        status: 'rejected',
+        value: 'Invalid',
       });
     });
   });

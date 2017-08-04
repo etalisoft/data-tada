@@ -6,6 +6,7 @@ import defaults from './defaults';
 const email = (
   {
     model = defaults.model,
+    trim = defaults.trim,
     required = defaults.required,
     minLength = defaults.minLength,
     maxLength = defaults.maxLength,
@@ -16,23 +17,34 @@ const email = (
     parse = defaults.parse,
   } = {}
 ) =>
-  createStringParser({ model, required, minLength, maxLength, regex, notRegex, validate, messages }).then(value => {
+  createStringParser({
+    model,
+    trim,
+    required,
+    minLength,
+    maxLength,
+    regex,
+    notRegex,
+    validate,
+    messages,
+  }).then(value => {
     const message = new Message(defaults.messages, messages).context(context);
     const resolveWith = format.new;
-    const rejectWith = err => { throw message.get(err) };
+    const rejectWith = err => {
+      throw message.get(err);
+    };
 
-    if(!value) {
-      return required ? rejectWith('required') : resolveWith(value)
+    if (!value) {
+      return required ? rejectWith('required') : resolveWith(value);
     }
 
     const result = parse(value);
-    if(!result) {
+    if (!result) {
       return rejectWith('invalid');
     }
 
     return resolveWith(result);
-  }
-);
+  });
 
 email.defaults = defaults;
 
