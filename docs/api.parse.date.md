@@ -27,7 +27,7 @@ Parses dates using the [Moment.js library](https://momentjs.com/).
   },
   parse, // Function signature: (value, ...args) => moment,
   formats: ['MMM D, YYYY', 'L', moment.ISO_8601],
-  ...args,
+  args: undefined,
 }
 ```
 
@@ -39,7 +39,7 @@ Parses dates using the [Moment.js library](https://momentjs.com/).
 - `messages` - The messages that will be returned for each of the rejections.
 - `parse` - A function that parses a value into a moment.
 - `formats` - The [moment string+formats](https://momentjs.com/docs/#/parsing/string-formats/) used for parsing strings.
-- `...args` - Any additional args to pass to the [moment parser](https://momentjs.com/docs/#/parsing/).
+- `args` - Array of any additional args to pass to the [moment parser](https://momentjs.com/docs/#/parsing/).
 
 ##### Messages
 You can override any or all of the default messages.  The message can be a string or a function.

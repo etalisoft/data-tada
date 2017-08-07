@@ -18,4 +18,5 @@ export default {
   },
   parse,
   formats: ['MMM D, YYYY', 'L', moment.ISO_8601],
+  args: undefined,
 };

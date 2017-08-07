@@ -13,7 +13,7 @@ const date = (
     messages = defaults.messages,
     parse = defaults.parse,
     formats = defaults.formats,
-    ...args
+    args = defaults.args,
   } = {}
 ) =>
   createExecutionPlan(model)(value => (resolve, reject) => {
@@ -26,7 +26,7 @@ const date = (
       return required ? rejectWith('required') : resolveWith(value);
     }
 
-    const params = args.length ? args : defaults.args ? defaults.args : [];
+    const params = args || [];
 
     const result = (context.result = format.new(parse(value, formats, ...params)));
 
