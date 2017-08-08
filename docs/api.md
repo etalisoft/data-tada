@@ -122,7 +122,7 @@ Parses ZIPs.
 - `Format.string.match` - s.toUpperCase()
 - `Format.string.normalize(form)` - s.normalize(form)
 - `Format.string.padEnd(n, p)` - s.padEnd(n, p)
-- `Format.string.padStart(n, p)` - s.padStart(l, p)
+- `Format.string.padStart(n, p)` - s.padStart(n, p)
 - `Format.string.repeat(n)` - s.repeat(n)
 - `Format.string.replace(pattern,replacement)` - s.replace(pattern, replacement)
 - `Format.string.right(n)` - Rightmost n characters of s
