@@ -41,6 +41,7 @@ Parses ZIPs.
 - `Format.date.format(f)` - moment.format(f)
 - `Format.date.from(d)` - moment.from(d)
 - `Format.date.fromNow(b)` - moment.fromNow(b)
+- `Format.date.invalid` - moment.invalid()
 - `Format.date.ISO` - moment.toISOString()
 - `Format.date.local` - moment.local()
 - `Format.date.max(d)` - max(d, moment)

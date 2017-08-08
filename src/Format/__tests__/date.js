@@ -40,6 +40,7 @@ describe('Format.date', () => {
     expect(format.format('YYYY')(m)).toBe(m.format('YYYY'));
     expect(format.from('2000-01-01')(m)).toBe(m.from('2000-01-01'));
     expect(format.fromNow()(m)).toBe(m.fromNow());
+    expect(format.invalid().isValid()).toBe(false);
     expect(format.min(moment('2000-01-01'))(m).valueOf()).toBe(moment('2000-01-01').valueOf());
     expect(format.max(moment('2000-01-01'))(m).valueOf()).toBe(m.valueOf());
     expect(format.subtract(3, 'days')(m)).toBe(m.subtract(3, 'days'));

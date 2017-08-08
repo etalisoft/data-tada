@@ -14,6 +14,7 @@ export default {
   format: f => m => m.format(f),
   from: d => m => m.from(d),
   fromNow: b => m => m.fromNow(b),
+  invalid: () => moment.invalid(),
   ISO: m => m.toISOString(),
   local: m => m.local(),
   max: d => m => moment.max(d, m),
