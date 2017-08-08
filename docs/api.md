@@ -132,7 +132,7 @@ Parses ZIPs.
 - `Format.string.startsWith(...args)` - s.startsWith(...args)
 - `Format.string.string` - The string (identity function)
 - `Format.string.substr(...args)` - s.substr(...args)
-- [`Format.string.title`](api.format.string.title.md) - "Simple" title case
+- [`Format.string.title(config)`](api.format.string.title.md) - "Simple" title case
 - `Format.string.toBase64` - window.btoa(s)
 - `Format.string.trim` - s.trim()
 - `Format.string.upper` - s.toUpperCase()
