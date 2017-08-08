@@ -28,6 +28,7 @@ const email = (
     validate,
     messages,
   }).then(value => {
+    const context = { value };
     const message = new Message(defaults.messages, messages).context(context);
     const resolveWith = format.new;
     const rejectWith = err => {
