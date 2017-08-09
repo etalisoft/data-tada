@@ -1,9 +1,9 @@
 import expect from 'expect';
 
 import SyncPromise from '../../SyncPromise';
-import parser from '../username';
+import parser from '../password';
 
-describe('Parse.username', () => {
+describe('Parse.password', () => {
   it('should expose defaults', () => {
     const keys = 'model,required,minLength,maxLength,regex,notRegex,validate,messages,parse'.split(',');
     expect(parser.defaults).toExist().toIncludeKeys(keys);
@@ -58,12 +58,12 @@ describe('Parse.username', () => {
 
   it('should resolve/reject on minLength', () => {
     const VALUES = {
-      a12: 'Too Short',
-      a123: 'a123',
+      aA$1234: 'Too Short',
+      aA$12345: 'aA$12345',
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      parser({ minLength: 4 })(k).value(state => {
+      parser({ minLength: 8 })(k).value(state => {
         expect(state).toContain({
           status: expected === 'Too Short' ? 'rejected' : 'resolved',
           value: expected,
@@ -74,8 +74,8 @@ describe('Parse.username', () => {
 
   it('should resolve/reject on maxLength', () => {
     const VALUES = {
-      a123456789: 'a123456789',
-      a1234567890: 'Too Long',
+      aA$1234567: 'aA$1234567',
+      aA$12345678: 'Too Long',
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
@@ -90,8 +90,11 @@ describe('Parse.username', () => {
 
   it('should resolve/reject on regex', () => {
     const VALUES = {
-      username: 'username',
-      '1username': 'Invalid',
+      lowerabc: 'Invalid',
+      UPPERABC: 'Invalid',
+      '12345678': 'Invalid',
+      '!@#$%^&*': 'Invalid',
+      'abAB12!@': 'abAB12!@',
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
@@ -106,12 +109,12 @@ describe('Parse.username', () => {
 
   it('should resolve/reject on notRegex', () => {
     const VALUES = {
-      user1: 'user1',
-      user0: 'Invalid',
+      'abAB12!@': 'abAB12!@',
+      'baBA21@!': 'Invalid',
     };
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      parser({ notRegex: /^user0$/ })(k).value(state => {
+      parser({ notRegex: /21/ })(k).value(state => {
         expect(state).toContain({
           status: expected === 'Invalid' ? 'rejected' : 'resolved',
           value: expected,
@@ -122,13 +125,13 @@ describe('Parse.username', () => {
 
   it('should resolve/reject on validate', () => {
     const VALUES = {
-      abcd: 'abcd',
-      Abcd: 'Invalid',
+      'paST12!@': 'paST12!@',
+      'paSS12!@': 'Invalid',
     };
-    const onlyLowerCase = v => v === v.toLowerCase();
+    const noPass = v => !v.toLowerCase().includes('pass');
     Object.keys(VALUES).forEach(k => {
       const expected = VALUES[k];
-      parser({ validate: onlyLowerCase })(k).value(state => {
+      parser({ validate: noPass })(k).value(state => {
         expect(state).toContain({
           status: expected === 'Invalid' ? 'rejected' : 'resolved',
           value: expected,
@@ -139,7 +142,7 @@ describe('Parse.username', () => {
 
   it('should support execution plan then/catch chains before parsing values', () => {
     const plan = parser().then(s => s.toLowerCase());
-    const promise = plan('USER').then(v => `${v}name`);
-    expect(promise.value()).toBe('username');
+    const promise = plan('abAB12!@').then(v => `${v}_`);
+    expect(promise.value()).toBe('abab12!@_');
   });
 });

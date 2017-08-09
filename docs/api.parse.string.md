@@ -41,7 +41,7 @@ Parses strings.
 - `maxLength` - Rejectable.  If the string > maxLength characters the promise will reject with the corresponding 'maxLength' message.
 - `regex` - Rejectable.  If the string does not match the regex the promise will reject with the corresponding 'regex' message.
 - `notRegex` - Rejectable.  If the string matches the notRegex the promise will reject with the corresponding 'notRegex' message.
-- `validate` - Rejectable.  If the validate function is specified and results in false, the promise will reject with the corresponding 'validate' message.  Function signature: `(date)=>Boolean`.
+- `validate` - Rejectable.  If the validate function is specified and results in false, the promise will reject with the corresponding 'validate' message.  Function signature: `String=>Boolean`.
 - `messages` - The messages that will be returned for each of the rejections.
 - `parse` - A function that tries to parse a string.
 

@@ -33,7 +33,7 @@ Parses numbers.
 - `required` - Rejectable.  If required=true and the input is falsy the promise will reject with the corresponding 'required' message.
 - `min` - Rejectable.  If the number < min the promise will reject with the corresponding 'min' message.
 - `max` - Rejectable.  If the number > max the promise will reject with the corresponding 'max' message.
-- `validate` - Rejectable.  If the validate function is specified and results in false, the promise will reject with the corresponding 'validate' message.  Function signature: `(date)=>Boolean`.
+- `validate` - Rejectable.  If the validate function is specified and results in false, the promise will reject with the corresponding 'validate' message.  Function signature: `Number=>Boolean`.
 - `messages` - The messages that will be returned for each of the rejections.
 - `parse` - A function that tries to parse a number.
 

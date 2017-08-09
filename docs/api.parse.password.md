@@ -4,22 +4,22 @@
 
 ### [Parsers](api.parse.md)
 
-#### `Parse.username`
+#### `Parse.password`
 
-Parses usernames.  This is an alias for Parse.string but with different defaults (notably `minLength`,
+Parses passwords.  This is an alias for Parse.string but with different defaults (notably `trim`, `minLength`,
 `maxLength`, and `regex`).
 
 ##### Configuration
 ```js
 // Default configuration:
-// Accessible via: Parse.username.defaults
+// Accessible via: Parse.password.defaults
 {
   model: SyncPromise,
-  trim: true,
+  trim: false,
   required: false,
-  minLength: 4,
-  maxLength: 25,
-  regex = /^[a-z][\w.-]*$/,
+  minLength: 8,
+  maxLength: 50,
+  regex, // Password regex
   notRegex: undefined,
   validate: undefined,
   messages: {
@@ -40,7 +40,7 @@ Parses usernames.  This is an alias for Parse.string but with different defaults
 - `required` - Rejectable.  If required=true and the input is falsy the promise will reject with the corresponding 'required' message.
 - `minLength` - Rejectable.  If the string < minLength characters the promise will reject with the corresponding 'minLength' message.
 - `maxLength` - Rejectable.  If the string > maxLength characters the promise will reject with the corresponding 'maxLength' message.
-- `regex` - Rejectable.  If the string does not match the regex the promise will reject with the corresponding 'regex' message.
+- `regex` - Rejectable.  If the string does not match the regex the promise will reject with the corresponding 'regex' message.  The default regex requires lowercase, uppercase, digit, and special characters.  It also requires only printable ASCII characters.
 - `notRegex` - Rejectable.  If the string matches the notRegex the promise will reject with the corresponding 'notRegex' message.
 - `validate` - Rejectable.  If the validate function is specified and results in false, the promise will reject with the corresponding 'validate' message.  Function signature: `String=>Boolean`.
 - `messages` - The messages that will be returned for each of the rejections.
@@ -49,16 +49,16 @@ Parses usernames.  This is an alias for Parse.string but with different defaults
 ##### Messages
 You can override any or all of the default messages.  The message can be a string or a function.
 ```js
-Parse.username({
+Parse.password({
   messages: {
-    required: 'Required.  Please enter a username.',
+    required: 'Required.  Please enter a password.',
     // A function can also be specified.  The signature is:  (rejectKey, rawValue) => Any
     // rejectKey would be 'maxLength'
-    // rawValue would be the value that is being parsed by Parse.username
+    // rawValue would be the value that is being parsed by Parse.password
     maxLength: (rejectKey, rawValue) => `25 characters max.  ${rawValue.length}/25`
   }
 })
 ```
 
 ##### Result
-If the input is successfully parsed it will return the username string.
+If the input is successfully parsed it will return the password string.

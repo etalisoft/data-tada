@@ -14,6 +14,9 @@ Parses emails.
 #### [`Parse.number`](api.parse.number.md)
 Parses numbers.
 
+#### [`Parse.password`](api.parse.password.md)
+Parses passwords.
+
 #### [`Parse.phone`](api.parse.phone.md)
 Parses phones.
 
@@ -93,6 +96,11 @@ Parses ZIPs.
 - `Format.number.usd` - $12,345.67
 - `Format.number.zero` - 0
 
+#### Password
+- `Format.password.new` - Create a password string from a value
+- `Format.password.mask` - ********
+- `Format.password.maskWith('#')` - ########
+
 #### Phone
 - `Format.phone.new` - Create a phone from a value
 - `Format.phone.phone` - area code and extension included with phone number
@@ -140,6 +148,11 @@ Parses ZIPs.
 - `Format.string.toBase64` - window.btoa(s)
 - `Format.string.trim` - s.trim()
 - `Format.string.upper` - s.toUpperCase()
+
+#### username
+- `Format.username.new` - Create a username string from a value
+- `Format.username.mask` - us****me
+- `Format.username.maskWith('?')` - us????me
 
 #### Zip
 - `Format.zip.new` - Create a zip from a value

@@ -41,7 +41,7 @@ Parses emails.
 - `maxLength` - Rejectable.  If the email > maxLength characters the promise will reject with the corresponding 'maxLength' message.
 - `regex` - Rejectable.  If the email does not match the regex the promise will reject with the corresponding 'regex' message.  The default value is the regex pattern specified by the [W3C input[type=email]](https://www.w3.org/TR/2012/WD-html-markup-20120320/input.email.html).
 - `notRegex` - Rejectable.  If the email matches the notRegex the promise will reject with the corresponding 'notRegex' message.
-- `validate` - Rejectable.  If the validate function is specified and results in false, the promise will reject with the corresponding 'validate' message.  Function signature: `(date)=>Boolean`.
+- `validate` - Rejectable.  If the validate function is specified and results in false, the promise will reject with the corresponding 'validate' message.  Function signature: `Object=>Boolean`.
 - `messages` - The messages that will be returned for each of the rejections.
 - `parse` - A function that tries to parse an email address.
 
