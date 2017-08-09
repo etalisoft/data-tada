@@ -4,6 +4,7 @@ import number from './number';
 import phone from './phone';
 import ssn from './ssn';
 import string from './string';
+import username from './username';
 import zip from './zip';
 
 export default {
@@ -13,5 +14,6 @@ export default {
   phone,
   ssn,
   string,
+  username,
   zip,
 };

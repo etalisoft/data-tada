@@ -23,6 +23,9 @@ Parses SSNs.
 #### [`Parse.string`](api.parse.string.md)
 Parses strings.
 
+#### [`Parse.username`](api.parse.username.md)
+Parses usernames.
+
 #### [`Parse.zip`](api.parse.zip.md)
 Parses ZIPs.
 

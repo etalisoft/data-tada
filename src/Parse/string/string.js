@@ -30,8 +30,8 @@ const string = (
       return required ? rejectWith('required') : resolveWith(unwrapped);
     }
 
-    const result = context.result = trimmed(parse(unwrapped));
-    if(result === undefined) {
+    const result = (context.result = trimmed(parse(unwrapped)));
+    if (result === undefined) {
       return rejectWith('invalid');
     }
 

@@ -5,7 +5,7 @@ import parser from '../string';
 
 describe('Parse.string', () => {
   it('should expose defaults', () => {
-    const keys = 'model,required,minLength,maxLength,regex,notRegex,validate,messages'.split(',');
+    const keys = 'model,required,minLength,maxLength,regex,notRegex,validate,messages,parse'.split(',');
     expect(parser.defaults).toExist().toIncludeKeys(keys);
   });
 
@@ -51,7 +51,7 @@ describe('Parse.string', () => {
         status: 'rejected',
         value: 'Required',
       });
-    })
+    });
 
     parser({ required: false, trim: true })(' ').value(state => {
       expect(state).toContain({
@@ -171,7 +171,7 @@ describe('Parse.string', () => {
         expect(state).toContain({
           status: expected === 'Invalid' ? 'rejected' : 'resolved',
           value: expected,
-        })
+        });
       });
     });
 
