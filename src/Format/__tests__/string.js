@@ -29,6 +29,11 @@ describe('Format.string', () => {
     expect(format.indexOf('Hin')(value)).toBe(value.indexOf('Hin'));
     expect(format.lastIndexOf('Hin')(value)).toBe(value.lastIndexOf('Hin'));
     expect(format.localeCompare('bob')(value)).toBe(value.localeCompare('bob'));
+    expect(format.maskMiddle('abc')).toBe('abc');
+    expect(format.maskMiddle('abcd')).toBe('a**d');
+    expect(format.maskMiddle('abcdefgh')).toBe('ab****gh');
+    expect(format.maskMiddleWith()('abcdefgh')).toBe('ab****gh');
+    expect(format.maskMiddleWith('?')('abcdefgh')).toBe('ab????gh');
     expect(format.match(/\s/g)(value).toString()).toBe(value.match(/\s/g).toString());
     expect(format.normalize()(value)).toBe(value.normalize());
     expect(format.padEnd(5, '*')(value)).toBe(value + '*****');

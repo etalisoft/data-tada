@@ -19,6 +19,8 @@ export default {
   localeLower: (...args) => s => s.toLocaleLowerCase(...args),
   localeUpper: (...args) => s => s.toLocaleUpperCase(...args),
   lower: s => s.toLowerCase(),
+  maskMiddle: maskMiddleWith(),
+  maskMiddleWith,
   match: regex => s => s.match(regex),
   normalize: form => s => s.normalize(form),
   padEnd: (len, pad) => s => s + String(pad || ' ').repeat(len >> 0),
@@ -37,6 +39,18 @@ export default {
   trim: s => s.trim(),
   upper: s => s.toUpperCase(),
 };
+
+function maskMiddleWith(char = '*') {
+  return str => {
+    var reg = /^(\w)(\w{2,3})(\w$)|(\w\w)(\w+?)(\w\w$)/;
+    var match = str.match(reg);
+    if (match) {
+      var o = match[1] ? 1 : 4;
+      return match[o] + new Array(match[o + 1].length + 1).join(char) + match[o + 2];
+    }
+    return str;
+  };
+}
 
 function create(value) {
   return typeof value === 'string' ? value : value === null || value === undefined ? '' : `${value}`;

@@ -131,6 +131,8 @@ Parses ZIPs.
 - `Format.string.localeLower(...args)` - s.toLocaleLowerCase(...args)
 - `Format.string.localeUpper(...args)` - s.toLocaleUpperCase(...args)
 - `Format.string.lower` - s.toLowerCase()
+- `Format.string.maskMiddle` - abcdefgh->ab****gh
+- `Format.string.maskMiddleWith('?')` abcdefgh->ab????gh
 - `Format.string.match` - s.toUpperCase()
 - `Format.string.normalize(form)` - s.normalize(form)
 - `Format.string.padEnd(n, p)` - s.padEnd(n, p)
@@ -151,8 +153,6 @@ Parses ZIPs.
 
 #### username
 - `Format.username.new` - Create a username string from a value
-- `Format.username.mask` - us****me
-- `Format.username.maskWith('?')` - us????me
 
 #### Zip
 - `Format.zip.new` - Create a zip from a value
