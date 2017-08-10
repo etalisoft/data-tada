@@ -97,9 +97,8 @@ Parses ZIPs.
 - `Format.number.zero` - 0
 
 #### Password
-- `Format.password.new` - Create a password string from a value
-- `Format.password.mask` - ********
-- `Format.password.maskWith('#')` - ########
+- `Format.password.new` - Create a password object from a value
+- `Format.password.password` - Extracts the password from the password object
 
 #### Phone
 - `Format.phone.new` - Create a phone from a value
