@@ -115,6 +115,7 @@ Parses ZIPs.
 #### String
 - `Format.string.new` - Create a string from a value
 - `Format.string.charAt(n)` - s.charAt(n)
+- `Format.string.charCodeArray` - Create an array of character codes
 - `Format.string.charCodeAt(n)` - s.charCodeAt(n)
 - `Format.string.concat(...more)` - s.concat(...more)
 - `Format.string.empty` - ''

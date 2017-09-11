@@ -22,6 +22,7 @@ describe('Format.string', () => {
     expect(format.localeUpper()(value)).toBe(value.toLocaleUpperCase());
     expect(format.trim(value)).toBe(value.trim());
     expect(format.charAt(4)(value)).toBe(value.charAt(4));
+    expect(format.charCodeArray('ABC').join(',')).toBe([65, 66, 67].join(','));
     expect(format.charCodeAt(4)(value)).toBe(value.charCodeAt(4));
     expect(format.concat('b', 'c', 'd')('a')).toBe('abcd');
     expect(format.endsWith('son ')(value)).toBe(true);

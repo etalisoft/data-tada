@@ -4,6 +4,7 @@ export default {
   new: v => create(v),
 
   charAt: n => s => s.charAt(n),
+  charCodeArray: s => s.split('').map(c => c.charCodeAt(0)),
   charCodeAt: n => s => s.charCodeAt(n),
   concat: (...more) => s => s.concat(...more),
   empty: () => '',
