@@ -50,6 +50,7 @@ describe('Format.string', () => {
     expect(format.substr(0, 8)(value)).toBe(value.substr(0, 8));
     expect(format.fromBase64('ZGF0YS10YWRh')).toBe('data-tada');
     expect(format.fromCharCode(65, 66, 67)).toBe('ABC');
+    expect(format.fromHex('000166FF').join(',')).toBe([0, 1, 102, 255].join(','));
     expect(format.toBase64('data-tada')).toBe('ZGF0YS10YWRh');
   });
 

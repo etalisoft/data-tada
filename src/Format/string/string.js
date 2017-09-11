@@ -11,6 +11,7 @@ export default {
   endsWith: (...args) => s => s.endsWith(...args),
   fromBase64: window.atob,
   fromCharCode: String.fromCharCode,
+  fromHex: s => s.match(/\w\w/g).reduce((a, c) => a.push(parseInt(c, 16)) && a, []),
   includes: (...args) => s => s.includes(...args),
   indexOf: (...args) => s => s.indexOf(...args),
   lastIndexOf: (...args) => s => s.lastIndexOf(...args),
