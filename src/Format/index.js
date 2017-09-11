@@ -1,3 +1,4 @@
+import array from './array';
 import date from './date';
 import email from './email';
 import number from './number';
@@ -9,6 +10,7 @@ import username from './username';
 import zip from './zip';
 
 export default {
+  array,
   date,
   email,
   number,
