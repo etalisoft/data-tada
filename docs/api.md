@@ -34,6 +34,12 @@ Parses ZIPs.
 
 ### Formatters
 
+#### Array
+- `Format.array.new` - Create an array from a value
+- `Format.array.fromCharCode` - Converts [65, 66, 67] to 'ABC'
+- `Format.array.join(c)` - Joins the array with `c` (default is '')
+- `Format.array.toHex` - Converts [0, 255] to '00FF'
+
 #### Date
 - `Format.date.new` - Create a moment from a value
 - `Format.date.add(...args)` - moment.add(...)
@@ -115,13 +121,14 @@ Parses ZIPs.
 #### String
 - `Format.string.new` - Create a string from a value
 - `Format.string.charAt(n)` - s.charAt(n)
-- `Format.string.charCodeArray` - Create an array of character codes
+- `Format.string.charCodeArray` - Converts 'ABC' to [65, 66, 67]
 - `Format.string.charCodeAt(n)` - s.charCodeAt(n)
 - `Format.string.concat(...more)` - s.concat(...more)
 - `Format.string.empty` - ''
 - `Format.string.endsWith(v)` - s.endsWith(v)
 - `Format.string.fromBase64` - window.atob(s)
 - `Format.string.fromCharCode` - String.fromCharCode(v)
+- `Format.string.fromHex` - Converts `00FF` to [0, 255]
 - `Format.string.includes(...args)` - s.includes(...args)
 - `Format.string.indexOf(...args)` - s.indexOf(...args)
 - `Format.string.lastIndexOf(...args)` - s.lastIndexOf(...args)
